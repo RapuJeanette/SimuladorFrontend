@@ -1,0 +1,29 @@
+<div class="container mx-auto mt-5">
+  <h1 class="mb-4 text-2xl font-bold">Lista de Citas</h1>
+  <table class="min-w-full bg-white border">
+    <thead>
+      <tr>
+        <th class="px-4 py-2 border">ID</th>
+        <th class="px-4 py-2 border">Fecha</th>
+        <th class="px-4 py-2 border">Estado</th>
+        <th class="px-4 py-2 border">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let doctor of citas">
+        <td class="px-4 py-2 border">{{ doctor.id }}</td>
+        <td class="px-4 py-2 border">{{ doctor.telefono }}</td>
+        <td class="px-4 py-2 border">{{ doctor.especialidad }}</td>
+        <td class="px-4 py-2 border">
+          <button class="px-3 py-1 text-white bg-red-500 rounded" >Eliminar</button>
+          <button class="px-3 py-1 text-white bg-green-500 rounded" >Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Botón para agregar un nuevo doctor -->
+  <div class="mt-4">
+    <button class="px-4 py-2 text-white bg-blue-500 rounded" >Agregar nueva cita</button>
+  </div>
+</div>
