@@ -1,0 +1,107 @@
+<div class="container">
+  <h2 class="text-lg font-bold">Pagos</h2>
+  <table class="min-w-full bg-white">
+    <thead>
+      <tr>
+        <th class="px-4 py-2 border">ID</th>
+        <th class="px-4 py-2 border">Monto</th>
+        <th class="px-4 py-2 border">Estado</th>
+        <th class="px-4 py-2 border">Fecha</th>
+        <th class="px-4 py-2 border">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pago of pagos">
+        <td class="px-4 py-2 border">{{ pago.id}}</td>
+        <td class="px-4 py-2 border">{{ pago.monto }}</td>
+        <td class="px-4 py-2 border">{{ pago.estado }}</td>
+        <td class="px-4 py-2 border">{{ pago.fecha | date }}</td>
+        <td>
+          <button
+            class="px-3 py-1 text-white bg-green-500 rounded"
+            (click)="abrirFormularioEdicion(pago.id)"
+          >
+            Editar
+          </button>
+          <button
+            class="px-3 py-1 text-white bg-red-500 rounded"
+            (click)="eliminarPago(pago.id)"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-4">
+    <button
+      class="px-4 py-2 text-white bg-blue-500 rounded"
+      (click)="abrirFormularioPago()"
+    >
+      Agregar Pago
+    </button>
+  </div>
+
+  <div *ngIf="mostrandoFormulario">
+    <form (ngSubmit)="guardarPago()">
+      <label class="block mb-2">Monto:</label>
+      <input
+        class="w-full p-2 mb-4 border"
+        [(ngModel)]="nuevoPago.monto"
+        name="monto"
+        type="number"
+        required
+      />
+
+      <label class="block mb-2">Estado:</label>
+      <select
+        class="w-full p-2 mb-4 border"
+        [(ngModel)]="nuevoPago.estado"
+        name="estado"
+        required
+      >
+        <option value="" disabled selected>Seleccionar estado</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="completado">Completado</option>
+      </select>
+
+      <label class="block mb-2">Fecha:</label>
+      <input
+        class="w-full p-2 mb-4 border"
+        [(ngModel)]="nuevoPago.fecha"
+        name="fecha"
+        type="date"
+        required
+      />
+
+      <div class="block mb-2">
+        <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded">
+          Guardar
+        </button>
+        <button type="button" class="px-4 py-2 text-white bg-blue-500 rounded" (click)="mostrandoFormulario = false">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="mostrandoFormularioEdicion">
+  <h2>Editar Pago</h2>
+  <form (ngSubmit)="actualizarPago()">
+    <input class="w-full p-2 mb-4 border" type="number" [(ngModel)]="pagoAEditar.monto" name="monto" placeholder="Monto" required />
+    <select
+        class="w-full p-2 mb-4 border"
+        [(ngModel)]="pagoAEditar.estado"
+        name="estado"
+        required
+      >
+        <option value="" disabled selected>Seleccionar estado</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="completado">Completado</option>
+      </select>
+    <input class="w-full p-2 mb-4 border" type="date" [(ngModel)]="pagoAEditar.fecha" name="fecha" required />
+    <button class="px-4 py-2 text-white bg-blue-500 rounded" type="submit">Actualizar</button>
+    <button class="px-4 py-2 text-white bg-blue-500 rounded" type="button" (click)="mostrandoFormularioEdicion = false">Cancelar</button>
+  </form>
+</div>
+
