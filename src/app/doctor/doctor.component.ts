@@ -18,6 +18,8 @@ export class DoctorComponent implements OnInit {
     especialidad: '',
     disponibilidad: ''
   };
+  doctorIdEditable: string = '';
+  mostrarModalEditar: boolean = false;
 
   constructor(private http: HttpClient) { }
 
@@ -36,7 +38,14 @@ export class DoctorComponent implements OnInit {
     this.http.post('http://127.0.0.1:8000/doctores/', this.nuevoDoctor)
       .subscribe(() => {
         this.obtenerDoctores();  // Actualizar la lista de doctores
-        this.nuevoDoctor = { telefono: '', especialidad: '', disponibilidad: '' };  // Limpiar el formulario
+        this.cerrarModal();
+      });
+  }
+
+  editarDoctor(id: string) {
+    this.http.put(`http://127.0.0.1:8000/doctores/${id}`, this.nuevoDoctor)
+      .subscribe(() => {
+        this.obtenerDoctores();  // Actualizar la lista de doctores
         this.cerrarModal();
       });
   }
@@ -52,9 +61,17 @@ export class DoctorComponent implements OnInit {
     this.mostrarModal = true;
   }
 
+  abrirModalEditar(id: string) {
+    this.doctorIdEditable = id;
+    this.mostrarModalEditar = true;
+  }
+
   // Función para cerrar el modal
   cerrarModal() {
     this.mostrarModal = false;
-    this.nuevoDoctor = { telefono: '', especialidad: '', disponibilidad: '' };  // Limpiar el formulario
+    this.mostrarModalEditar = false;
+    this.nuevoDoctor = { telefono: '', especialidad: '', disponibilidad: '' };
   }
+
+
 }

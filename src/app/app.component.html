@@ -1,5 +1,6 @@
-<app-admin-panel></app-admin-panel>
-<div class="p-4 ml-64">
-    <router-outlet></router-outlet>
+<div class="contenedor-principal">
+  <app-admin-panel *ngIf="isAdminPanelVisible()"></app-admin-panel> <!-- Controla la visibilidad -->
+  <div class="p-4" [ngClass]="{'ml-0': !isAdminPanelVisible(), 'ml-64': isAdminPanelVisible()}">
+      <router-outlet></router-outlet>
+  </div>
 </div>
-
