@@ -1,0 +1,12 @@
+.fondo-imagen {
+    flex: 1; /* Ocupa la mitad de la pantalla */
+    background-image: url('./cirugia.png');
+    background-size: cover; /* Asegura que la imagen cubra todo el área */
+    background-position: center; /* Centra la imagen */
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+  }
+  
+  
+  
+  

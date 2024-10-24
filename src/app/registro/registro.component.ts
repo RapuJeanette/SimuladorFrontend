@@ -1,38 +1,45 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'
-import { AppComponent } from "../app.component";
+import { HttpClientModule } from '@angular/common/http';  // Importa HttpClientModule
+import { AuthService } from '../auth.service';  // Importa AuthService
+import { FormsModule } from '@angular/forms';  // FormsModule para el formulario
+import { Router } from '@angular/router';  // Importa Router para la redirección
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [FormsModule, AppComponent],
+  imports: [FormsModule, HttpClientModule],  // Asegúrate de importar HttpClientModule
+  providers: [AuthService],  // Proveer AuthService aquí
   templateUrl: './registro.component.html',
-  styleUrl: './registro.component.css'
+  styleUrls: ['./registro.component.css']
 })
-
 export class RegistroComponent {
   nuevoUsuario = {
     nombre: '',
     correo: '',
     password: ''
   };
-  constructor(private http: HttpClient) { }
 
-  async registrar() {
+  constructor(private authService: AuthService,private router:Router) { }
+
+  // Método para registrar un nuevo usuario
+  registrar() {
     if (!this.nuevoUsuario.nombre || !this.nuevoUsuario.correo || !this.nuevoUsuario.password) {
       console.error('Todos los campos son obligatorios');
       return;
     }
 
-    try {
-      const response = await this.http.post('http://127.0.0.1:8000/usuarios/', this.nuevoUsuario, {
-        headers: { 'Content-Type': 'application/json' }
-      }).toPromise();
-      console.log('Usuario registrado:', response);
-    } catch (error) {
-      console.error('Error al registrar usuario:', error);
-    }
+    // Usar el servicio AuthService para manejar la lógica de registro
+    this.authService.register(this.nuevoUsuario).subscribe(
+      (response: any) => {  // Especificar que la respuesta tiene tipo 'any'
+        console.log('Usuario registrado exitosamente:', response);
+      },
+      (error: any) => {  // Especificar que el error tiene tipo 'any'
+        console.error('Error al registrar usuario:', error);
+      }
+    );
   }
-
+  //Metodo para redirigir al login
+  goToLogin() {
+    this.router.navigate(['/login']);
+}
 }
