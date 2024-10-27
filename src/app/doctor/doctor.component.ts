@@ -18,6 +18,7 @@ export class DoctorComponent implements OnInit {
     especialidad: '',
     disponibilidad: ''
   };
+  doctorAEditar: any = null;
   doctorIdEditable: string = '';
   mostrarModalEditar: boolean = false;
 
@@ -64,7 +65,11 @@ export class DoctorComponent implements OnInit {
   abrirModalEditar(id: string) {
     this.doctorIdEditable = id;
     this.mostrarModalEditar = true;
-  }
+    const doctorParaEditar = this.doctores.find(doctor => doctor.id === id);
+    if (doctorParaEditar) {
+        this.doctorAEditar = { ...doctorParaEditar }; // Copia los datos del doctor a editar
+    }
+}
 
   // Función para cerrar el modal
   cerrarModal() {
