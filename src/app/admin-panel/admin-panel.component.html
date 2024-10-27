@@ -3,21 +3,21 @@
       <h1 class="text-xl font-bold">Panel Administrativo</h1>
       <ul class="mt-4">
           <li>
-              <a routerLink="/doctor" class="block p-2 hover:bg-gray-700">
-                  <i class="mr-2 fas fa-user-md"></i>
-                  Doctores
-              </a>
-          </li>
-          <li>
-            <a routerLink="/pago" class="block p-2 hover:bg-gray-700">
-                <i class="fa fa-credit-card-alt"></i>
-                Pagos
+            <a (click)="navigateTo('/doctor')" class="block p-2 hover:bg-gray-700">
+              <i class="mr-2 fas fa-user-md"></i>
+              Doctores
             </a>
           </li>
           <li>
-            <a routerLink="/citas" class="block p-2 hover:bg-gray-700">
-                <i class="fa fa-address-book"></i>
-                Citas
+            <a (click)="navigateTo('/pago')" class="block p-2 hover:bg-gray-700">
+              <i class="fa fa-credit-card-alt"></i>
+              Pagos
+            </a>
+          </li>
+          <li>
+            <a (click)="navigateTo('/citas')" class="block p-2 hover:bg-gray-700">
+              <i class="fa fa-address-book"></i>
+              Citas
             </a>
           </li>
       </ul>

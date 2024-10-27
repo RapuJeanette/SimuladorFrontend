@@ -89,12 +89,7 @@
   <h2>Editar Pago</h2>
   <form (ngSubmit)="actualizarPago()">
     <input class="w-full p-2 mb-4 border" type="number" [(ngModel)]="pagoAEditar.monto" name="monto" placeholder="Monto" required />
-    <select
-        class="w-full p-2 mb-4 border"
-        [(ngModel)]="pagoAEditar.estado"
-        name="estado"
-        required
-      >
+    <select class="w-full p-2 mb-4 border" [(ngModel)]="pagoAEditar.estado" name="estado" required>
         <option value="" disabled selected>Seleccionar estado</option>
         <option value="pendiente">Pendiente</option>
         <option value="completado">Completado</option>

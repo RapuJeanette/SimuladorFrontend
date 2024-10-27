@@ -14,10 +14,13 @@ export class DoctorComponent implements OnInit {
   doctores: any[] = [];
   mostrarModal = false;
   nuevoDoctor = {
+    nombre: '',
+    correo: '',
     telefono: '',
     especialidad: '',
     disponibilidad: ''
   };
+  doctorAEditar: any = null;
   doctorIdEditable: string = '';
   mostrarModalEditar: boolean = false;
 
@@ -64,13 +67,17 @@ export class DoctorComponent implements OnInit {
   abrirModalEditar(id: string) {
     this.doctorIdEditable = id;
     this.mostrarModalEditar = true;
+    const doctorParaEditar = this.doctores.find(doctor => doctor.id === id);
+    if (doctorParaEditar){
+      this.doctorAEditar = { ... doctorParaEditar}
+    }
   }
 
   // Función para cerrar el modal
   cerrarModal() {
     this.mostrarModal = false;
     this.mostrarModalEditar = false;
-    this.nuevoDoctor = { telefono: '', especialidad: '', disponibilidad: '' };
+    this.nuevoDoctor = { nombre: '', correo: '',telefono: '', especialidad: '', disponibilidad: '' };
   }
 
 
