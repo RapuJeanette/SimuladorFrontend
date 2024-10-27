@@ -1,0 +1,27 @@
+<header class="bg-gray-900 text-gray-300 py-4">
+  <div class="container mx-auto px-4 flex items-center justify-between">
+
+    <!-- Logo -->
+    <div class="flex items-center space-x-2">
+      <img src="path/to/logo.png" alt="Logo" class="h-8 w-auto">
+      <span class="text-white font-semibold text-lg">Simulador de Cirugía Plástica</span>
+    </div>
+
+    <!-- Menú de Navegación -->
+    <nav class="hidden md:flex space-x-6">
+      <a href="#" class="hover:underline text-gray-300">Home</a>
+      <a href="#" class="hover:underline text-gray-300">Procedimientos</a>
+      <a href="#" class="hover:underline text-gray-300">Contacto</a>
+    </nav>
+
+    <!-- Botones de Inicio de Sesión y Registro -->
+    <div class="space-x-2">
+      <button class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700" (click)="redirectToLogin()">Iniciar
+        Sesión</button>
+
+        <button class="px-4 py-2 bg-yellow-500 text-gray-900 font-semibold rounded hover:bg-yellow-600" (click)="redirectToRegister()">Registrarse</button>
+
+    </div>
+
+  </div>
+</header>

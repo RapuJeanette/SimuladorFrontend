@@ -1,0 +1,56 @@
+<div class="max-w-md mx-auto p-6 bg-white rounded shadow-md mt-10">
+    <h2 class="text-2xl font-bold text-center mb-6">{{ esNuevoUsuario ? 'Completa tu perfil' : 'Editar Perfil' }}</h2>
+  
+    <!-- Mensaje de éxito o error -->
+    <div *ngIf="mensaje" class="text-center text-green-500 mb-4">{{ mensaje }}</div>
+  
+    <!-- Formulario de edición de perfil -->
+    <form (ngSubmit)="guardarPerfil()">
+      <!-- Campo: Nombre -->
+      <div class="mb-4">
+        <label class="block mb-1 font-semibold" for="nombre">Nombre:</label>
+        <input id="nombre" [(ngModel)]="usuarioData.nombre" name="nombre" class="w-full p-2 border rounded" required />
+      </div>
+  
+      <!-- Campo: Teléfono -->
+      <div class="mb-4">
+        <label class="block mb-1 font-semibold" for="telefono">Teléfono:</label>
+        <input id="telefono" [(ngModel)]="usuarioData.telefono" name="telefono" class="w-full p-2 border rounded" required />
+      </div>
+  
+      <!-- Campo: Dirección -->
+      <div class="mb-4">
+        <label class="block mb-1 font-semibold" for="direccion">Dirección:</label>
+        <input id="direccion" [(ngModel)]="usuarioData.direccion" name="direccion" class="w-full p-2 border rounded" required />
+      </div>
+  
+      <!-- Campo: Fecha de Nacimiento -->
+      <div class="mb-4">
+        <label class="block mb-1 font-semibold" for="fecha_nacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fecha_nacimiento" [(ngModel)]="usuarioData.fecha_nacimiento" name="fecha_nacimiento" class="w-full p-2 border rounded" required />
+      </div>
+  
+      <!-- Campo: Carnet de Identidad -->
+      <div class="mb-4">
+        <label class="block mb-1 font-semibold" for="carnet_identidad">Carnet de Identidad:</label>
+        <input id="carnet_identidad" [(ngModel)]="usuarioData.carnet_identidad" name="carnet_identidad" class="w-full p-2 border rounded" required />
+      </div>
+  
+      <!-- Campo: Sexo -->
+      <div class="mb-4">
+        <label class="block mb-1 font-semibold" for="sexo">Sexo:</label>
+        <select id="sexo" [(ngModel)]="usuarioData.sexo" name="sexo" class="w-full p-2 border rounded" required>
+          <option value="">Seleccione</option>
+          <option value="masculino">Masculino</option>
+          <option value="femenino">Femenino</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+  
+      <!-- Botón de Guardar o Actualizar Perfil -->
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded">
+        {{ esNuevoUsuario ? 'Guardar Perfil' : 'Actualizar Perfil' }}
+      </button>
+    </form>
+  </div>
+  

@@ -1,0 +1,35 @@
+<section class="bg-gray-100 py-4">
+  <div class="container mx-auto px-4 md:px-8 lg:px-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+    
+    <!-- Bloque: Sube tus Fotos -->
+    <div class="text-center flex flex-col items-center">
+      <img src="assets/images/ejemplo.jpg" alt="Sube tus Fotos" class="w-48 h-48 rounded-lg shadow-md mb-2">
+      <h3 class="text-xl font-semibold text-gray-900 mb-1">Sube tus Fotos</h3>
+      <p class="text-gray-600 text-sm">Sube 3 fotos del rostro o cuerpo con tu móvil o cámara.</p>
+    </div>
+    
+    <!-- Bloque: Simulación 3D -->
+    <div class="text-center flex flex-col items-center">
+      <div class="relative w-48 h-48 rounded-lg overflow-hidden shadow-md mb-2">
+        <video *ngIf="showAntesVideo" class="w-full h-full object-cover" controls>
+          <source src="assets/videos/antes.mp4" type="video/mp4">
+          Tu navegador no soporta la reproducción de video.
+        </video>
+        <video *ngIf="!showAntesVideo" class="w-full h-full object-cover" controls>
+          <source src="assets/videos/despues.mp4" type="video/mp4">
+          Tu navegador no soporta la reproducción de video.
+        </video>
+      </div>
+      
+      <!-- Botones de Alternar Videos Antes/Después -->
+      <div class="flex space-x-2 mb-1">
+        <button (click)="toggleVideo('antes')" class="px-3 py-1 text-sm font-semibold text-white bg-gray-800 rounded hover:bg-gray-700">Antes</button>
+        <button (click)="toggleVideo('despues')" class="px-3 py-1 text-sm font-semibold text-gray-900 bg-yellow-500 rounded hover:bg-yellow-600">Después</button>
+      </div>
+      
+      <h3 class="text-xl font-semibold text-gray-900 mb-1">Simulación 3D</h3>
+      <p class="text-gray-600 text-sm">Visualiza tu posible resultado en 3D antes y después de la cirugía.</p>
+    </div>
+    
+  </div>
+</section>

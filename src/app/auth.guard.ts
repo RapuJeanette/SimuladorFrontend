@@ -18,7 +18,9 @@ export class AuthGuard implements CanActivate {
     }
 
     // Si no es admin, redirigir al login
+    this.authService.logout();
     this.router.navigate(['/login']);
     return false;  // Bloquear el acceso
   }
+
 }

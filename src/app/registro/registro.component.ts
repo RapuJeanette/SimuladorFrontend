@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';  // Importa HttpClientModule
-import { AuthService } from '../auth.service';  // Importa AuthService
-import { FormsModule } from '@angular/forms';  // FormsModule para el formulario
-import { Router } from '@angular/router';  // Importa Router para la redirección
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../auth.service';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';  // Importa CommonModule para habilitar *ngIf
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [FormsModule, HttpClientModule],  // Asegúrate de importar HttpClientModule
+  imports: [FormsModule, HttpClientModule, CommonModule],  // Asegúrate de importar CommonModule aquí
   providers: [AuthService],  // Proveer AuthService aquí
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css']
@@ -18,8 +19,9 @@ export class RegistroComponent {
     correo: '',
     password: ''
   };
+  errorMessage = '';  // Variable para almacenar el mensaje de error
 
-  constructor(private authService: AuthService,private router:Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   // Método para registrar un nuevo usuario
   registrar() {
@@ -30,16 +32,24 @@ export class RegistroComponent {
 
     // Usar el servicio AuthService para manejar la lógica de registro
     this.authService.register(this.nuevoUsuario).subscribe(
-      (response: any) => {  // Especificar que la respuesta tiene tipo 'any'
+      (response: any) => {
         console.log('Usuario registrado exitosamente:', response);
+        // Redirige al login si el registro fue exitoso
+        this.router.navigate(['/login']);
       },
-      (error: any) => {  // Especificar que el error tiene tipo 'any'
+      (error: any) => {
+        if (error.status === 400) {  // Suponiendo que el backend envía un 409 cuando el correo ya está en uso
+          this.errorMessage = 'Correo ya registrado';
+        } else {
+          this.errorMessage = 'Hubo un error al registrar. Intente nuevamente.';
+        }
         console.error('Error al registrar usuario:', error);
       }
     );
   }
-  //Metodo para redirigir al login
+
+  // Método para redirigir al login
   goToLogin() {
     this.router.navigate(['/login']);
-}
+  }
 }

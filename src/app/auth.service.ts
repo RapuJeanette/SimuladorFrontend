@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,20 +9,21 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://127.0.0.1:8000';  // Cambia la URL según tu API
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   // Método para el registro de usuarios
   register(user: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/usuarios/`, user);
   }
 
-  // Método para hacer login
   login(credentials: { correo: string, password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login/`, credentials).pipe(
       tap((response: any) => {
         if (this.isBrowser()) {
           localStorage.setItem('access_token', response.access_token);
           localStorage.setItem('user_role', response.rol);
+          localStorage.setItem('user_name', response.nombre); // Guarda el nombre del usuario
+          localStorage.setItem('user_correo', response.correo); // Guarda el correo del usuario
         }
       })
     );
@@ -56,13 +58,39 @@ export class AuthService {
     }
     return null;
   }
-
-  // Cerrar sesión y eliminar el token
-  // Cerrar sesión
-  logout(): void {
+// Método para obtener el nombre del usuario desde localStorage
+getUserName(): string | null {
+  return this.isBrowser() ? localStorage.getItem('user_name') : null;
+}
+// Método para obtener el correo del usuario desde localStorage
+getCorreo(): string | null {
+  if (this.isBrowser()) {
+    return localStorage.getItem('user_email');
+  }
+  return null;
+}
+   // Método para cerrar sesión y eliminar token, rol y correo
+   logout(): void {
     if (this.isBrowser()) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('user_role');
+      localStorage.removeItem('user_email');  // Elimina el correo del usuario
     }
+    this.router.navigate(['/login']);  // Redirige al login después de cerrar sesión
+  }
+  obtenerPerfil(correo: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/usuarios/buscar_por_correo/${correo}`);
+  }
+  
+  // Crear el perfil del usuario (nuevo usuario)
+  crearPerfil(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/pacientes/`, data);
+  }
+
+    
+
+  // Actualizar el perfil del usuario
+  actualizarPerfil(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/pacientes/`, data);
   }
 }

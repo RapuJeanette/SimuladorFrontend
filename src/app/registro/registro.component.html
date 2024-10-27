@@ -1,9 +1,15 @@
 <div class="flex h-screen">
-  <div class="hidden w-1/2 h-full fondo-imagen lg:block">
-  </div>
+  <div class="hidden w-1/2 h-full fondo-imagen lg:block"></div>
+
   <div class="flex items-center justify-center w-full p-6 lg:w-1/2">
     <div class="w-full max-w-md">
       <h1 class="mb-6 text-3xl font-bold text-center">Descubra su posible nueva imagen en 3D antes de la cirugía</h1>
+
+      <!-- Muestra el mensaje de error si existe -->
+      <div *ngIf="errorMessage" class="mb-4 text-center text-red-500 font-semibold">
+        {{ errorMessage }}
+      </div>
+
       <form (ngSubmit)="registrar()" class="px-8 pt-6 pb-8 mb-4 bg-gray-100 rounded shadow-md">
         <div class="mb-4">
           <label class="block mb-2 text-sm font-bold text-gray-700" for="nombre">Nombre:</label>
@@ -22,20 +28,17 @@
           <label for="terminos">He leído y acepto los términos y condiciones del servicio, la política de privacidad y la declaración de seguridad.</label>
         </div>
         <div class="flex items-center justify-between">
-          <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="submit">
+          <button class="px-4 py-2 font-bold text-white bg-yellow-500 rounded hover:bg-yellow-600 focus:outline-none focus:shadow-outline" type="submit">
             Registrar
           </button>
         </div>
       </form>
       <div class="mt-4 text-center">
         <span>Ya tengo una cuenta. </span>
-        <button (click)="goToLogin()" class="text-blue-500 hover:underline">
+        <button (click)="goToLogin()" class="text-yellow-500 hover:underline">
           Iniciar sesión
         </button>
       </div>
     </div>
   </div>
-
 </div>
-
-
