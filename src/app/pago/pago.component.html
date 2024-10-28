@@ -4,6 +4,7 @@
     <thead>
       <tr>
         <th class="px-4 py-2 border">ID</th>
+        <th class="px-4 py-2 border">Cliente</th>
         <th class="px-4 py-2 border">Monto</th>
         <th class="px-4 py-2 border">Estado</th>
         <th class="px-4 py-2 border">Fecha</th>
@@ -13,6 +14,7 @@
     <tbody>
       <tr *ngFor="let pago of pagos">
         <td class="px-4 py-2 border">{{ pago.id}}</td>
+        <td class="px-4 py-2 border">{{ pago.usuario_id }}</td>
         <td class="px-4 py-2 border">{{ pago.monto }}</td>
         <td class="px-4 py-2 border">{{ pago.estado }}</td>
         <td class="px-4 py-2 border">{{ pago.fecha | date }}</td>
@@ -37,14 +39,18 @@
   <div class="mt-4">
     <button
       class="px-4 py-2 text-white bg-blue-500 rounded"
-      (click)="abrirFormularioPago()"
-    >
-      Agregar Pago
+      (click)="abrirFormularioPago()">Agregar Pago
     </button>
   </div>
 
   <div *ngIf="mostrandoFormulario">
     <form (ngSubmit)="guardarPago()">
+      <label class="block mb-2">Paciente:</label>
+      <select class="w-full p-2 mb-4 border"[(ngModel)]="nuevoPago.usuario_id"
+        name="usuario_id" required>
+        <option value="" disabled selected>Seleccionar paciente</option>
+        <option *ngFor="let paciente of pacientes" [value]="paciente.usuario_id">{{ paciente.usuario_id}}</option>
+      </select>
       <label class="block mb-2">Monto:</label>
       <input
         class="w-full p-2 mb-4 border"
@@ -88,6 +94,11 @@
 <div *ngIf="mostrandoFormularioEdicion">
   <h2>Editar Pago</h2>
   <form (ngSubmit)="actualizarPago()">
+    <label class="block mb-2">Paciente:</label>
+      <select class="w-full p-2 mb-4 border"[(ngModel)]="pagoAEditar.usuario_id"name="usuario_id" required>
+        <option value="" disabled selected>Seleccionar paciente</option>
+        <option *ngFor="let paciente of pacientes" [value]="paciente.usuario_id">{{ paciente.usuario_id}}</option>
+      </select>
     <input class="w-full p-2 mb-4 border" type="number" [(ngModel)]="pagoAEditar.monto" name="monto" placeholder="Monto" required />
     <select class="w-full p-2 mb-4 border" [(ngModel)]="pagoAEditar.estado" name="estado" required>
         <option value="" disabled selected>Seleccionar estado</option>

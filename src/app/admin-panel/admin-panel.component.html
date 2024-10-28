@@ -1,10 +1,10 @@
-<nav class="fixed w-64 h-screen text-white bg-gray-800 flex flex-col justify-between">
+<nav class="fixed flex flex-col justify-between w-64 h-screen text-white bg-gray-800">
   <div class="p-4">
       <!-- Mostrar el nombre del usuario logueado -->
-      <h2 class="text-lg font-semibold mb-4">Bienvenido, {{ userName }}</h2>
-      
-      <h1 class="text-xl font-bold mb-6">Panel Administrativo</h1>
-      
+      <h2 class="mb-4 text-lg font-semibold">Bienvenido, {{ userName }}</h2>
+
+      <h1 class="mb-6 text-xl font-bold">Panel Administrativo</h1>
+
       <ul class="mt-4">
           <li>
             <a (click)="navigateTo('/doctor')" class="block p-2 hover:bg-gray-700">
@@ -24,12 +24,18 @@
               Citas
             </a>
           </li>
+          <li>
+            <a (click)="navigateTo('pacientes')" class="block p-2 hover:bg-gray-700">
+              <i class="mr-2 fas fa-user"></i>
+              Pacientes
+            </a>
+          </li>
       </ul>
   </div>
 
   <!-- Botón de Cerrar Sesión -->
   <div class="p-4">
-      <button (click)="logout()" class="w-full p-2 bg-red-600 hover:bg-red-700 text-white rounded">
+      <button (click)="logout()" class="w-full p-2 text-white bg-red-600 rounded hover:bg-red-700">
           <i class="mr-2 fa fa-sign-out-alt"></i>
           Cerrar Sesión
       </button>

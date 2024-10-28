@@ -13,6 +13,7 @@ import { PatientGuard } from './patient.guard';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { HomePacienteComponent } from './home-paciente/home-paciente.component';
 import { EditarPerfilComponent } from './editar-perfil/editar-perfil.component';
+import { PacientesComponent } from './pacientes/pacientes.component'
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },  // Ruta predeterminada para la página de inicio
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'doctor', component: DoctorComponent, canActivate: [AuthGuard] },
   { path: 'pago', component: PagoComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
+  { path: 'pacientes', component: PacientesComponent },
   { path: 'editar-perfil/:correo', component: EditarPerfilComponent },
   { path: 'citas', component: CitasComponent, canActivate: [AuthGuard] },
   { path: 'home-paciente/editar-perfil', component: EditarPerfilComponent, canActivate: [PatientGuard] },

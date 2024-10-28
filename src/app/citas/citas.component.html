@@ -4,26 +4,118 @@
     <thead>
       <tr>
         <th class="px-4 py-2 border">ID</th>
+        <th class="px-4 py-2 border">Paciente</th>
         <th class="px-4 py-2 border">Fecha</th>
         <th class="px-4 py-2 border">Estado</th>
+        <th class="px-4 py-2 border">Doctor</th>
         <th class="px-4 py-2 border">Acciones</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let doctor of citas">
         <td class="px-4 py-2 border">{{ doctor.id }}</td>
-        <td class="px-4 py-2 border">{{ doctor.telefono }}</td>
-        <td class="px-4 py-2 border">{{ doctor.especialidad }}</td>
+        <td class="px-4 py-2 border">{{ doctor.paciente_id }}</td>
+        <td class="px-4 py-2 border">{{ doctor.fecha }}</td>
+        <td class="px-4 py-2 border">{{ doctor.estado}}</td>
+        <td class="px-4 py-2 border">{{ doctor.doctor_id }}</td>
         <td class="px-4 py-2 border">
-          <button class="px-3 py-1 text-white bg-red-500 rounded" >Eliminar</button>
-          <button class="px-3 py-1 text-white bg-green-500 rounded" >Editar</button>
+          <button class="px-3 py-1 text-white bg-red-500 rounded" (click)="eliminarCita(doctor.id)">Eliminar</button>
+          <button class="px-3 py-1 text-white bg-green-500 rounded" (click)="abrirModalEditar(doctor._id)">Editar</button>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <!-- Botón para agregar un nuevo doctor -->
   <div class="mt-4">
-    <button class="px-4 py-2 text-white bg-blue-500 rounded" >Agregar nueva cita</button>
+    <button class="px-4 py-2 text-white bg-blue-500 rounded" (click)="abrirModalCrear()">Agregar nueva cita</button>
   </div>
 </div>
+
+<!-- Modal para crear cita -->
+<div *ngIf="mostrarModal" class="fixed inset-0 z-10 overflow-y-auto bg-black bg-opacity-50">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="w-11/12 p-6 bg-white rounded-lg shadow-lg md:w-1/2">
+      <span class="text-red-500 cursor-pointer close" (click)="cerrarModalCrear()">&times;</span>
+      <h2 class="mb-4 text-xl font-bold">Crear Cita</h2>
+      <form (ngSubmit)="crearCita()" class="space-y-4">
+        <div>
+          <label for="paciente" class="block text-sm font-medium text-gray-700">Paciente:</label>
+          <select [(ngModel)]="nuevaCita.paciente_id" name="paciente_id" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md">
+            <option *ngFor="let paciente of pacientes" [value]="paciente.usuario_id">
+              {{ paciente.usuario_id }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha:</label>
+          <input type="date" [(ngModel)]="nuevaCita.fecha" name="fecha" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md">
+        </div>
+
+        <div>
+          <label for="estado" class="block text-sm font-medium text-gray-700">Estado:</label>
+          <input type="text" [(ngModel)]="nuevaCita.estado" name="estado" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md">
+        </div>
+
+        <div>
+          <label for="doctor" class="block text-sm font-medium text-gray-700">Doctor:</label>
+          <select [(ngModel)]="nuevaCita.doctor_id" name="doctor_id" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md">
+            <option *ngFor="let doctor of doctores" [value]="doctor.nombre">
+              {{ doctor.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="flex justify-end mt-4 space-x-2">
+          <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">Crear</button>
+          <button type="button" (click)="cerrarModalCrear()" class="px-4 py-2 text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar cita -->
+<div *ngIf="mostrarModalEditar" class="fixed inset-0 z-10 overflow-y-auto bg-black bg-opacity-50">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="w-11/12 p-6 bg-white rounded-lg shadow-lg md:w-1/2">
+      <span class="text-red-500 cursor-pointer close" (click)="cerrarModalEditar()">&times;</span>
+      <h2 class="mb-4 text-xl font-bold">Editar Cita</h2>
+      <form (ngSubmit)="editarCita()" class="space-y-4">
+        <div>
+          <label for="paciente" class="block text-sm font-medium text-gray-700">Paciente:</label>
+          <select [(ngModel)]="nuevaCita.paciente_id" name="paciente" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md">
+            <option *ngFor="let paciente of pacientes" [value]="paciente.usuario_id">
+              {{ paciente.usuario_id }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="doctor" class="block text-sm font-medium text-gray-700">Doctor:</label>
+          <select [(ngModel)]="nuevaCita.doctor_id" name="doctor" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md">
+            <option *ngFor="let doctor of doctores" [value]="doctor.id">
+              {{ doctor.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha:</label>
+          <input type="date" [(ngModel)]="nuevaCita.fecha" name="fecha" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md">
+        </div>
+
+        <div>
+          <label for="estado" class="block text-sm font-medium text-gray-700">Estado:</label>
+          <input type="text" [(ngModel)]="nuevaCita.estado" name="estado" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md">
+        </div>
+
+        <div class="flex justify-end mt-4 space-x-2">
+          <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">Actualizar</button>
+          <button type="button" (click)="cerrarModalEditar()" class="px-4 py-2 text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

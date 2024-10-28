@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { PagoService } from './pago.service';
+import { Component, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { response } from 'express';
-
 @Component({
   selector: 'app-pago',
   standalone: true,
@@ -14,7 +11,10 @@ import { response } from 'express';
 })
 export class PagoComponent implements OnInit {
   pagos: any[] = [];
+  pacientes: any[] = [];
+  usuarioSeleccionado: any;
   nuevoPago = {
+    usuario_id:'',
     monto: 0,
     estado: '',
     fecha: new Date()
@@ -28,15 +28,31 @@ export class PagoComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerPagos();
+    this.obtenerPacientes();
+  }
+
+  onUsuarioSeleccionado(usuarioId: string) {
+    this.nuevoPago.usuario_id = usuarioId; // Asigna el usuario_id al nuevo pago
   }
 
   obtenerPagos() {
     this.http.get('http://localhost:8000/pagos').subscribe((response: any) => { this.pagos = response });
   }
 
+  obtenerPacientes() {
+    this.http.get('http://localhost:8000/pacientes/').subscribe((data: any) => {
+        console.log('Datos recibidos:', data);  // Agrega esto para ver qué datos estás obteniendo
+        this.pacientes = data;  // Almacena los pacientes en la variable
+    }, error => {
+        console.error('Error al obtener pacientes:', error);  // Manejo de errores
+    });
+}
+
+
   abrirFormularioPago() {
     this.mostrandoFormulario = true;
     this.nuevoPago = {
+      usuario_id: '',
       monto: 0,
       estado: '',
       fecha: new Date()
@@ -56,6 +72,7 @@ export class PagoComponent implements OnInit {
     this.http.put(`http://127.0.0.1:8000/pagos/${id}`, this.nuevoPago)
     .subscribe(() => {
       this.obtenerPagos();
+      this.obtenerPacientes();
       this.mostrandoFormulario = false;
     })
   }
@@ -65,6 +82,7 @@ export class PagoComponent implements OnInit {
       this.http.put(`http://localhost:8000/pagos/${this.pagoAEditar.id}`, this.pagoAEditar)
         .subscribe(() => {
           this.obtenerPagos();
+          this.obtenerPacientes();
           this.mostrandoFormularioEdicion = false;
         });
     }

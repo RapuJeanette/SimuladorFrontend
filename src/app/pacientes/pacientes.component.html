@@ -1,0 +1,100 @@
+<div class="container mx-auto mt-5">
+  <h1 class="mb-4 text-2xl font-bold">Lista de Pacientes</h1>
+  <table class="min-w-full bg-white border">
+    <thead>
+      <tr>
+        <th class="px-4 py-2 border">Correo</th>
+        <th class="px-4 py-2 border">Telefono</th>
+        <th class="px-4 py-2 border">Direccion</th>
+        <th class="px-4 py-2 border">Fecha de Nacimiento</th>
+        <th class="px-4 py-2 border">Carnet de Identidad</th>
+        <th class="px-4 py-2 border">Sexo</th>
+        <th class="px-4 py-2 border">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let paciente of pacientes">
+        <td class="px-4 py-2 border">{{ paciente.usuario_id }}</td>
+        <td class="px-4 py-2 border">{{ paciente.telefono }}</td>
+        <td class="px-4 py-2 border">{{ paciente.direccion }}</td>
+        <td class="px-4 py-2 border">{{ paciente.fecha_nacimiento }}</td>
+        <td class="px-4 py-2 border">{{ paciente.carnet_identidad }}</td>
+        <td class="px-4 py-2 border">{{ paciente.sexo }}</td>
+        <td class="px-4 py-2 border">
+          <button class="px-3 py-1 text-white bg-red-500 rounded" (click)="eliminarPaciente(paciente.id)">Eliminar</button>
+          <button class="px-3 py-1 text-white bg-green-500 rounded" (click)="abrirModalEditar(paciente.id)">Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-4">
+    <button class="px-4 py-2 text-white bg-blue-500 rounded" (click)="abrirModal()">Agregar nuevo paciente</button>
+  </div>
+</div>
+
+<div *ngIf="mostrarModal" class="fixed inset-0 z-10 overflow-y-auto">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="p-8 bg-white rounded-lg shadow-lg">
+      <h2 class="mb-4 text-xl font-bold">Registrar nuevo Paciente </h2>
+
+      <form (ngSubmit)="agregarPaciente()">
+        <label class="block mb-2">Correo:</label>
+        <input type="text" [(ngModel)]="nuevoPaciente.usuario_id" name="usuario_id" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Telefono:</label>
+        <input type="text" [(ngModel)]="nuevoPaciente.telefono" name="telefono" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Direccion:</label>
+        <input type="text" [(ngModel)]="nuevoPaciente.direccion" name="direccion" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Fecha de Nacimiento:</label>
+        <input type="text" [(ngModel)]="nuevoPaciente.fecha_nacimiento" name="fecha_nacimiento" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Carnet de Identidad:</label>
+        <input type="email" [(ngModel)]="nuevoPaciente.carnet_identidad" name="carnet_identidad" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Sexo:</label>
+        <input type="email" [(ngModel)]="nuevoPaciente.sexo" name="sexo" class="w-full p-2 mb-4 border" required />
+
+        <div class="flex justify-end">
+          <button type="button" class="px-4 py-2 mr-4 text-white bg-gray-500 rounded" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="mostrarModalEditar" class="fixed inset-0 z-10 overflow-y-auto">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="p-8 bg-white rounded-lg shadow-lg">
+      <h2 class="mb-4 text-xl font-bold">Editar Paciente</h2>
+
+      <form (ngSubmit)="editarPaciente(pacienteIdEditable)">
+        <label class="block mb-2">Correo:</label>
+        <input type="text" [(ngModel)]="pacienteAEditar.usuario_id" name="usuario_id" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Telefono:</label>
+        <input type="text" [(ngModel)]="pacienteAEditar.telefono" name="telefono" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Direccion:</label>
+        <input type="text" [(ngModel)]="pacienteAEditar.direccion" name="direccion" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Fecha de Nacimiento:</label>
+        <input type="text" [(ngModel)]="pacienteAEditar.fecha_nacimiento" name="fecha_nacimiento" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Carnet de Identidad:</label>
+        <input type="email" [(ngModel)]="pacienteAEditar.carnet_identidad" name="carnet_identidad" class="w-full p-2 mb-4 border" required />
+
+        <label class="block mb-2">Sexo:</label>
+        <input type="email" [(ngModel)]="pacienteAEditar.sexo" name="sexo" class="w-full p-2 mb-4 border" required />
+
+        <div class="flex justify-end">
+          <button type="button" class="px-4 py-2 mr-4 text-white bg-gray-500 rounded" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
