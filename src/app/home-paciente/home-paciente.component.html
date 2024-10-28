@@ -1,51 +1,48 @@
-<div class="min-h-screen bg-gray-50 flex flex-col items-center pt-12">
-    <!-- Header con logo, navegación y menú de usuario -->
-    <div class="w-full max-w-6xl flex justify-between items-center px-6 lg:px-12">
-      <img src="assets/logo.png" alt="Logo" class="h-10"> <!-- Ruta de tu logo -->
-  
-      <nav class="flex items-center space-x-6 text-lg relative">
-        <a routerLink="/" class="text-gray-800 hover:text-gray-600">Inicio</a>
-        <a routerLink="/comunidad" class="text-gray-800 hover:text-gray-600">Comunidad 3D</a>
-  
-        <!-- Icono de usuario y menú desplegable -->
-        <div class="relative">
-          <button (click)="toggleUserMenu()" class="text-gray-800 hover:text-gray-600 focus:outline-none">
-            <i class="fas fa-user-circle text-2xl"></i>
-          </button>
-  
-          <!-- Menú desplegable -->
-          <div *ngIf="isUserMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20">
-            <ul class="py-1 text-gray-700">
-                <button (click)="editarPerfil()" class="btn btn-primary">
-                    Editar Perfil
-                  </button>
-                  
-             <!-- <li><a routerLink="/informacion-legal" class="block px-4 py-2 hover:bg-gray-100">Información legal</a></li>-->
-              <li><a (click)="logout()" class="block px-4 py-2 hover:bg-gray-100">Salir</a></li>
-            </ul>
-          </div>
+<div class="min-h-screen bg-gray-100 flex flex-col items-center pt-8">
+  <!-- Header con logo, navegación y menú de usuario -->
+  <div class="w-full max-w-6xl flex justify-between items-center px-6 lg:px-12">
+    <div class="flex items-center space-x-4">
+      <img src="assets/images/logo.png" alt="Logo" class="h-12 w-auto object-contain"> <!-- Logo sin borde ni sombra -->
+      <span class="text-xl font-semibold text-gray-800">Clínica Privada Jorge M.</span> <!-- Título junto al logo -->
+    </div>
+    <nav class="flex items-center space-x-6 text-lg">
+      <!-- Menú de navegación -->
+      <a routerLink="/" class="text-gray-800 hover:text-gray-600 font-semibold">Inicio</a>
+      
+      <!-- Icono de usuario y menú desplegable -->
+      <div class="relative">
+        <button (click)="toggleUserMenu()" class="text-gray-800 hover:text-gray-600 focus:outline-none">
+          <i class="fas fa-user-circle text-3xl"></i>
+        </button>
+
+        <!-- Menú desplegable -->
+        <div *ngIf="isUserMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20">
+          <ul class="py-1 text-gray-700">
+            <li><button (click)="editarPerfil()" class="block w-full text-left px-4 py-2 hover:bg-gray-100">Editar Perfil</button></li>
+            <li><button (click)="logout()" class="block w-full text-left px-4 py-2 hover:bg-gray-100">Salir</button></li>
+          </ul>
         </div>
-      </nav>
-    </div>
-  
-    <!-- Imagen de fondo y mensaje de bienvenida -->
-    <div class="w-full max-w-3xl mt-12 text-center">
-      <img src="assets/home-background.jpg" alt="Fondo" class="w-full h-64 rounded-lg shadow-lg object-cover mb-8"> <!-- Fondo -->
-  
-      <h1 class="text-4xl font-bold text-gray-800 mb-6">Crear Imagen 3D</h1>
-      <p class="text-gray-700 mb-8">
-        Póngase en contacto con un profesional de la estética para que le aconseje y pueda programar una consulta.
-      </p>
-  
-      <!-- Botones -->
-      <div class="space-y-4">
-        <button (click)="crearImagen3D()" class="w-64 px-6 py-3 font-bold text-white bg-yellow-500 rounded-lg shadow-lg hover:bg-yellow-600 transition duration-300">
-          Crear imagen 3D
-        </button>
-        <button (click)="buscarProfesional()" class="w-64 px-6 py-3 font-bold text-white bg-blue-700 rounded-lg shadow-lg hover:bg-blue-800 transition duration-300">
-          Buscar un profesional estético
-        </button>
       </div>
-    </div>
+    </nav>
   </div>
-  
+
+  <!-- Contenedor principal -->
+  <div class="w-full max-w-4xl mt-12 text-center">
+    <img src="assets/images/cirugia.png" alt="Fondo" class="w-full h-64 rounded-lg shadow-lg object-cover mb-8"> <!-- Imagen de fondo -->
+
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Crear Imagen 3D</h1>
+    <p class="text-gray-700 mb-8 leading-relaxed">
+      Póngase en contacto con un profesional de la estética para que le aconseje y pueda programar una consulta.
+    </p>
+
+    <!-- Botones -->
+    <div class="space-y-4">
+      <button (click)="crearImagen3D()" class="w-full max-w-sm px-6 py-3 font-bold text-white bg-black rounded-lg shadow-lg hover:bg-gray-800 transition duration-300">
+        Crear imagen 3D
+      </button>
+      <button (click)="buscarProfesional()" class="w-full max-w-sm px-6 py-3 font-bold text-black bg-yellow-500 rounded-lg shadow-lg hover:bg-yellow-600 transition duration-300">
+        Buscar un profesional estético
+      </button>
+    </div>    
+  </div>
+</div>

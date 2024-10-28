@@ -1,56 +1,80 @@
-<div class="max-w-md mx-auto p-6 bg-white rounded shadow-md mt-10">
-    <h2 class="text-2xl font-bold text-center mb-6">{{ esNuevoUsuario ? 'Completa tu perfil' : 'Editar Perfil' }}</h2>
-  
-    <!-- Mensaje de éxito o error -->
-    <div *ngIf="mensaje" class="text-center text-green-500 mb-4">{{ mensaje }}</div>
-  
+<div class="min-h-screen bg-gray-100 flex flex-col items-center pt-8">
+  <!-- Barra superior -->
+  <div class="w-full max-w-6xl flex justify-between items-center px-6 lg:px-12">
+    <div class="flex items-center space-x-4">
+      <img src="assets/images/logo.png" alt="Logo" class="h-12 w-auto object-contain"> <!-- Logo -->
+      <span class="text-xl font-semibold text-gray-800">Clínica Privada Jorge M.</span>
+    </div>
+    <nav class="flex items-center space-x-6 text-lg">
+      <!-- Botón de inicio que redirige a home-paciente -->
+      <button (click)="goToHomePaciente()" class="text-gray-800 hover:text-gray-600 font-semibold">
+        Inicio
+      </button>
+
+      <!-- Menú desplegable de usuario -->
+      <div class="relative">
+        <button (click)="toggleUserMenu()" class="text-gray-800 hover:text-gray-600 focus:outline-none">
+          <i class="fas fa-user-circle text-3xl"></i>
+        </button>
+
+        <!-- Opciones del menú desplegable -->
+        <div *ngIf="isUserMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20">
+          <ul class="py-1 text-gray-700">
+            <li><button (click)="logout()" class="block w-full text-left px-4 py-2 hover:bg-gray-100">Cerrar Sesión</button></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="w-full max-w-3xl mt-12 text-center bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Editar tu perfil</h1>
+
+    <!-- Alerta de confirmación -->
+    <div *ngIf="showAlert" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg">
+      Datos actualizados exitosamente
+    </div>
+
     <!-- Formulario de edición de perfil -->
-    <form (ngSubmit)="guardarPerfil()">
-      <!-- Campo: Nombre -->
-      <div class="mb-4">
-        <label class="block mb-1 font-semibold" for="nombre">Nombre:</label>
-        <input id="nombre" [(ngModel)]="usuarioData.nombre" name="nombre" class="w-full p-2 border rounded" required />
+    <form (ngSubmit)="guardarPerfil()" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-left font-semibold text-gray-700 mb-2">Correo</label>
+          <input type="email" [(ngModel)]="pacienteData.correo" name="correo" class="w-full p-3 border rounded" readonly />
+        </div>
+        <div>
+          <label class="block text-left font-semibold text-gray-700 mb-2">Teléfono</label>
+          <input type="text" [(ngModel)]="pacienteData.telefono" name="telefono" class="w-full p-3 border rounded" />
+        </div>
+
+        <div>
+          <label class="block text-left font-semibold text-gray-700 mb-2">Dirección</label>
+          <input type="text" [(ngModel)]="pacienteData.direccion" name="direccion" class="w-full p-3 border rounded" />
+        </div>
+        <div>
+          <label class="block text-left font-semibold text-gray-700 mb-2">Fecha de Nacimiento</label>
+          <input type="date" [(ngModel)]="pacienteData.fecha_nacimiento" name="fecha_nacimiento" class="w-full p-3 border rounded" />
+        </div>
+
+        <div>
+          <label class="block text-left font-semibold text-gray-700 mb-2">Carnet de Identidad</label>
+          <input type="text" [(ngModel)]="pacienteData.carnet_identidad" name="carnet_identidad" class="w-full p-3 border rounded" />
+        </div>
+        <div>
+          <label class="block text-left font-semibold text-gray-700 mb-2">Sexo</label>
+          <select [(ngModel)]="pacienteData.sexo" name="sexo" class="w-full p-3 border rounded">
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
       </div>
-  
-      <!-- Campo: Teléfono -->
-      <div class="mb-4">
-        <label class="block mb-1 font-semibold" for="telefono">Teléfono:</label>
-        <input id="telefono" [(ngModel)]="usuarioData.telefono" name="telefono" class="w-full p-2 border rounded" required />
-      </div>
-  
-      <!-- Campo: Dirección -->
-      <div class="mb-4">
-        <label class="block mb-1 font-semibold" for="direccion">Dirección:</label>
-        <input id="direccion" [(ngModel)]="usuarioData.direccion" name="direccion" class="w-full p-2 border rounded" required />
-      </div>
-  
-      <!-- Campo: Fecha de Nacimiento -->
-      <div class="mb-4">
-        <label class="block mb-1 font-semibold" for="fecha_nacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fecha_nacimiento" [(ngModel)]="usuarioData.fecha_nacimiento" name="fecha_nacimiento" class="w-full p-2 border rounded" required />
-      </div>
-  
-      <!-- Campo: Carnet de Identidad -->
-      <div class="mb-4">
-        <label class="block mb-1 font-semibold" for="carnet_identidad">Carnet de Identidad:</label>
-        <input id="carnet_identidad" [(ngModel)]="usuarioData.carnet_identidad" name="carnet_identidad" class="w-full p-2 border rounded" required />
-      </div>
-  
-      <!-- Campo: Sexo -->
-      <div class="mb-4">
-        <label class="block mb-1 font-semibold" for="sexo">Sexo:</label>
-        <select id="sexo" [(ngModel)]="usuarioData.sexo" name="sexo" class="w-full p-2 border rounded" required>
-          <option value="">Seleccione</option>
-          <option value="masculino">Masculino</option>
-          <option value="femenino">Femenino</option>
-          <option value="otro">Otro</option>
-        </select>
-      </div>
-  
-      <!-- Botón de Guardar o Actualizar Perfil -->
-      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded">
-        {{ esNuevoUsuario ? 'Guardar Perfil' : 'Actualizar Perfil' }}
+
+      <!-- Botón para guardar -->
+      <button type="submit" class="w-full p-3 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600">
+        Guardar
       </button>
     </form>
   </div>
-  
+</div>

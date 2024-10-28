@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'doctor', component: DoctorComponent, canActivate: [AuthGuard] },
   { path: 'pago', component: PagoComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'editar-perfil/:correo', component: EditarPerfilComponent },
+  { path: 'editar-perfil/:correo', component: EditarPerfilComponent, canActivate: [AuthGuard,PatientGuard] },
   { path: 'citas', component: CitasComponent, canActivate: [AuthGuard] },
   { path: 'home-paciente/editar-perfil', component: EditarPerfilComponent, canActivate: [PatientGuard] },
   { path: '**', redirectTo: '' }  // Redirige cualquier ruta no reconocida a la página de inicio

@@ -1,81 +1,117 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-editar-perfil',
   standalone: true,
-  imports: [FormsModule,CommonModule],  // Asegúrate de que FormsModule esté incluido aquí
+  imports: [FormsModule, CommonModule],
   templateUrl: './editar-perfil.component.html',
   styleUrls: ['./editar-perfil.component.css']
 })
 export class EditarPerfilComponent implements OnInit {
-  usuarioData = {
-    nombre: '',
+  pacienteData = {
+    correo: '',
     telefono: '',
     direccion: '',
     fecha_nacimiento: '',
     carnet_identidad: '',
     sexo: ''
   };
-  mensaje: string = '';
-  esNuevoUsuario: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
+  showAlert = false; 
+  isNewProfile: boolean = true;
+  isUserMenuOpen = false;
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    const correo = this.route.snapshot.paramMap.get('correo');
-  
-
-    console.log(`Bienvenido, usuario con correo: ${correo}`);
+    const correo = this.authService.getCorreo();
+    if (!correo) {
+      console.error('No se encontró el correo en el almacenamiento. Redirigiendo a inicio de sesión.');
+      this.router.navigate(['/login']);
+      return;
+    }
+    
+    this.pacienteData.correo = correo;
+    this.cargarDatosUsuario();
   }
-
-  cargarDatosUsuario(correo: string) {
-    this.authService.obtenerPerfil(correo).subscribe(
-      (perfil: any) => {
-        if (perfil) {
-          this.usuarioData = perfil;
-          this.esNuevoUsuario = false;
+  mostrarAlerta() {
+    this.showAlert = true;
+    setTimeout(() => {
+      this.showAlert = false;
+      this.router.navigate(['/home-paciente']); // Redirige al home después de actualizar
+    }, 2000);
+  }
+  cargarDatosUsuario() {
+    this.authService.getPacientePorCorreo(this.pacienteData.correo).subscribe(
+      (response: any) => {
+        if (response && response.paciente) {
+          const paciente = response.paciente;
+          this.pacienteData = {
+            ...this.pacienteData,
+            telefono: paciente.telefono,
+            direccion: paciente.direccion,
+            fecha_nacimiento: paciente.fecha_nacimiento.split('T')[0],
+            carnet_identidad: paciente.carnet_identidad,
+            sexo: paciente.sexo
+          };
+          this.isNewProfile = false;
         } else {
-          this.esNuevoUsuario = true;
+          this.isNewProfile = true;
         }
       },
-      (error) => {
-        console.error("Error al cargar los datos del usuario:", error);
-        if (error.status === 404) {
-          this.esNuevoUsuario = true;
-        }
+      (error: any) => {
+        console.error('Error al cargar los datos del usuario:', error);
+        this.isNewProfile = error.status === 404; // Verifica si el perfil no existe
       }
     );
   }
 
   guardarPerfil() {
-    const correo = this.route.snapshot.paramMap.get('correo');
-    
-
-    if (this.esNuevoUsuario) {
-      this.authService.crearPerfil(this.usuarioData).subscribe(
+    if (this.isNewProfile) {
+      this.authService.crearPaciente(this.pacienteData).subscribe(
         () => {
-          this.mensaje = 'Perfil creado exitosamente';
-          this.esNuevoUsuario = false;
+          alert('Datos guardados exitosamente.');
+          this.router.navigate(['/home-paciente']);
         },
-        (error) => {
-          console.error("Error al crear el perfil:", error);
-          this.mensaje = 'Error al crear el perfil. Inténtelo de nuevo.';
-        }
+        (error) => console.error('Error al crear el paciente:', error)
       );
     } else {
-      this.authService.actualizarPerfil(this.usuarioData).subscribe(
+      this.authService.actualizarPaciente(this.pacienteData).subscribe(
         () => {
-          this.mensaje = 'Perfil actualizado exitosamente';
+          alert('Datos actualizados exitosamente.');
+          this.router.navigate(['/home-paciente']);
         },
-        (error) => {
-          console.error("Error al actualizar el perfil:", error);
-          this.mensaje = 'Error al actualizar el perfil. Inténtelo de nuevo.';
-        }
+        (error) => console.error('Error al actualizar el paciente:', error)
       );
     }
+  }
+
+  crearPaciente() {
+    this.authService.crearPaciente(this.pacienteData).subscribe(
+      (response: any) => console.log("Paciente creado exitosamente:", response),
+      (error: any) => console.error("Error al crear el paciente:", error)
+    );
+  }
+
+  actualizarPaciente() {
+    this.authService.actualizarPaciente(this.pacienteData).subscribe(
+      (response: any) => console.log("Paciente actualizado exitosamente:", response),
+      (error: any) => console.error("Error al actualizar el paciente:", error)
+    );
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+  goToHomePaciente() {
+    this.router.navigate(['/home-paciente']);
+  }
+  toggleUserMenu(): void {
+    this.isUserMenuOpen = !this.isUserMenuOpen;
   }
 }
