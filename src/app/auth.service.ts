@@ -10,7 +10,7 @@ export class AuthService {
   private apiUrl = 'http://127.0.0.1:8000';  // Cambia la URL según tu API
 
   constructor(private http: HttpClient, private router: Router) { }
-
+  private correoUsuario: string = '';
   // Método para el registro de usuarios
   register(user: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/usuarios/`, user);
@@ -51,26 +51,20 @@ export class AuthService {
     return !!this.getToken();
   }
 
-   // Obtener el rol del usuario desde localStorage
-   getUserRole(): string | null {
+  // Obtener el rol del usuario desde localStorage
+  getUserRole(): string | null {
     if (this.isBrowser()) {
       return localStorage.getItem('user_role');
     }
     return null;
   }
-// Método para obtener el nombre del usuario desde localStorage
-getUserName(): string | null {
-  return this.isBrowser() ? localStorage.getItem('user_name') : null;
-}
-// Método para obtener el correo del usuario desde localStorage
-getCorreo(): string | null {
-  if (this.isBrowser()) {
-    return localStorage.getItem('user_email');
+  // Método para obtener el nombre del usuario desde localStorage
+  getUserName(): string | null {
+    return this.isBrowser() ? localStorage.getItem('user_name') : null;
   }
-  return null;
-}
-   // Método para cerrar sesión y eliminar token, rol y correo
-   logout(): void {
+  
+  // Método para cerrar sesión y eliminar token, rol y correo
+  logout(): void {
     if (this.isBrowser()) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('user_role');
@@ -78,19 +72,26 @@ getCorreo(): string | null {
     }
     this.router.navigate(['/login']);  // Redirige al login después de cerrar sesión
   }
+  getCorreo(): string {
+    return localStorage.getItem('user_correo') || '';
+  }
+
   obtenerPerfil(correo: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/usuarios/buscar_por_correo/${correo}`);
   }
-  
-  // Crear el perfil del usuario (nuevo usuario)
-  crearPerfil(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/pacientes/`, data);
+
+  crearPaciente(pacienteData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/pacientes/`, pacienteData);
   }
 
-    
-
-  // Actualizar el perfil del usuario
-  actualizarPerfil(data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/pacientes/`, data);
+  actualizarPaciente(pacienteData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/pacientes/`, pacienteData);
   }
+  // Método para obtener los datos del paciente por correo
+  getPacientePorCorreo(correo: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/pacientes/${correo}`);
+  }
+
 }
+
+

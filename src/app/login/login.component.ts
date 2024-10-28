@@ -37,7 +37,7 @@ export class LoginComponent {
         // Guardar el token y rol en localStorage
         this.authService.saveToken(response.access_token);
         localStorage.setItem('user_role', response.rol);  // Guarda el rol en localStorage
-
+        localStorage.setItem('user_correo', response.correo);  // Guarda el correo en localStorage
         // Redirigir según el rol del usuario
         if (response.rol === 'admin') {
           this.router.navigate(['/admin-panel']);  // Redirigir a la vista de admin

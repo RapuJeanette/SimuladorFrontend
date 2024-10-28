@@ -23,8 +23,12 @@ export const routes: Routes = [
   { path: 'doctor', component: DoctorComponent, canActivate: [AuthGuard] },
   { path: 'pago', component: PagoComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
+<<<<<<< HEAD
   { path: 'pacientes', component: PacientesComponent },
   { path: 'editar-perfil/:correo', component: EditarPerfilComponent },
+=======
+  { path: 'editar-perfil/:correo', component: EditarPerfilComponent, canActivate: [AuthGuard,PatientGuard] },
+>>>>>>> a7ce11e19f37dd34e3108c8e13d5c98d755b8d36
   { path: 'citas', component: CitasComponent, canActivate: [AuthGuard] },
   { path: 'home-paciente/editar-perfil', component: EditarPerfilComponent, canActivate: [PatientGuard] },
   { path: '**', redirectTo: '' }  // Redirige cualquier ruta no reconocida a la página de inicio

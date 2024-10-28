@@ -13,7 +13,7 @@ import { AuthService } from '../auth.service';
 })
 export class HomePacienteComponent {
   isUserMenuOpen = false;
-  correoDelUsuario: string | null = '';
+  correo: string | null = null;
   constructor(private router: Router, private authService: AuthService) {
     
   }
@@ -26,20 +26,15 @@ export class HomePacienteComponent {
   }
 
   ngOnInit(): void {
-    // Obteniendo el correo desde localStorage
-    this.correoDelUsuario = localStorage.getItem('user_email');
-  }
-
-  // Método para redirigir al perfil de edición
-  editarPerfil() {
-    if (this.correoDelUsuario) {
-      this.router.navigate(['/editar-perfil', this.correoDelUsuario]);
-    } else {
-      console.error("Correo no encontrado. Redirigiendo al inicio de sesión.");
+    this.correo = localStorage.getItem('user_correo');
+    if (!this.correo) {
+      console.warn('Correo no encontrado. Redirigiendo al inicio de sesión.');
       this.router.navigate(['/login']);
     }
   }
-
+  editarPerfil(): void {
+    this.router.navigate(['home-paciente/editar-perfil']); // Redirige a la vista de edición de perfil
+  }
   buscarProfesional() {
     this.router.navigate(['/buscar-profesional']);
   }
