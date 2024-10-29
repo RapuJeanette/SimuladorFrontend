@@ -59,18 +59,25 @@ export class CitasComponent implements OnInit {
   }
   // Método para editar una cita existente
   editarCita() {
-    if (this.citaIdEdicion) {
-      this.http.put(`http://localhost:8000/citas/${this.citaIdEdicion}`, this.nuevaCita).subscribe(response => {
+  if (this.citaIdEdicion) {
+    this.http.put(`http://localhost:8000/citas/${this.citaIdEdicion}`, this.nuevaCita).subscribe(
+      response => {
         this.obtenerCitas(); // Actualiza la lista de citas
         this.cerrarModalEditar();
         this.limpiarFormulario(); // Limpia el formulario
-      });
-    }
+      },
+      error => {
+        console.error('Error al actualizar la cita:', error);
+      }
+    );
+  } else {
+    console.error('ID de cita no disponible');
   }
+}
 
   // Método para eliminar una cita
   eliminarCita(citaId: string) {
-    this.http.delete(`http://localhost:8000/citas/${citaId}`).subscribe(response => {
+    this.http.delete('http://localhost:8000/citas/${citaId}').subscribe(response => {
       this.obtenerCitas(); // Actualiza la lista de citas
     });
   }
@@ -94,13 +101,14 @@ export class CitasComponent implements OnInit {
     this.mostrarModal = false;
   }
 
-  abrirModalEditar(cita: any) {
-    this.citaIdEdicion = cita.id;
-    this.nuevaCita.paciente_id = cita.paciente_id;
-    this.nuevaCita.doctor_id = cita.doctor_id;
-    this.nuevaCita.fecha = cita.fecha;
-    this.nuevaCita.estado = cita.estado;
+  abrirModalEditar(id: string) {
     this.mostrarModalEditar = true;
+    const citaParaEditar = this.citas.find(cita => cita.id === id);
+
+    if (citaParaEditar) {
+      this.citaIdEdicion = citaParaEditar.id; // Guarda el ID de la cita que se está editando
+      this.nuevaCita = { ...citaParaEditar }; // Carga los datos de la cita en el formulario
+    }
   }
 
   // Método para cerrar el modal de edición

@@ -21,7 +21,7 @@
         <td class="px-4 py-2 border">{{ paciente.carnet_identidad }}</td>
         <td class="px-4 py-2 border">{{ paciente.sexo }}</td>
         <td class="px-4 py-2 border">
-          <button class="px-3 py-1 text-white bg-red-500 rounded" (click)="eliminarPaciente(paciente.id)">Eliminar</button>
+          <button class="px-3 py-1 text-white bg-red-500 rounded" (click)="eliminarPaciente(paciente.usuario_id)">Eliminar</button>
           <button class="px-3 py-1 text-white bg-green-500 rounded" (click)="abrirModalEditar(paciente.id)">Editar</button>
         </td>
       </tr>
@@ -49,13 +49,13 @@
         <input type="text" [(ngModel)]="nuevoPaciente.direccion" name="direccion" class="w-full p-2 mb-4 border" required />
 
         <label class="block mb-2">Fecha de Nacimiento:</label>
-        <input type="text" [(ngModel)]="nuevoPaciente.fecha_nacimiento" name="fecha_nacimiento" class="w-full p-2 mb-4 border" required />
+        <input type="date" [(ngModel)]="nuevoPaciente.fecha_nacimiento" name="fecha_nacimiento" class="w-full p-2 mb-4 border" required />
 
         <label class="block mb-2">Carnet de Identidad:</label>
-        <input type="email" [(ngModel)]="nuevoPaciente.carnet_identidad" name="carnet_identidad" class="w-full p-2 mb-4 border" required />
+        <input type="text" [(ngModel)]="nuevoPaciente.carnet_identidad" name="carnet_identidad" class="w-full p-2 mb-4 border" required />
 
         <label class="block mb-2">Sexo:</label>
-        <input type="email" [(ngModel)]="nuevoPaciente.sexo" name="sexo" class="w-full p-2 mb-4 border" required />
+        <input type="text" [(ngModel)]="nuevoPaciente.sexo" name="sexo" class="w-full p-2 mb-4 border" required />
 
         <div class="flex justify-end">
           <button type="button" class="px-4 py-2 mr-4 text-white bg-gray-500 rounded" (click)="cerrarModal()">Cancelar</button>
@@ -71,7 +71,7 @@
     <div class="p-8 bg-white rounded-lg shadow-lg">
       <h2 class="mb-4 text-xl font-bold">Editar Paciente</h2>
 
-      <form (ngSubmit)="editarPaciente(pacienteIdEditable)">
+      <form (ngSubmit)="editarPaciente()">
         <label class="block mb-2">Correo:</label>
         <input type="text" [(ngModel)]="pacienteAEditar.usuario_id" name="usuario_id" class="w-full p-2 mb-4 border" required />
 
@@ -85,10 +85,10 @@
         <input type="text" [(ngModel)]="pacienteAEditar.fecha_nacimiento" name="fecha_nacimiento" class="w-full p-2 mb-4 border" required />
 
         <label class="block mb-2">Carnet de Identidad:</label>
-        <input type="email" [(ngModel)]="pacienteAEditar.carnet_identidad" name="carnet_identidad" class="w-full p-2 mb-4 border" required />
+        <input type="text" [(ngModel)]="pacienteAEditar.carnet_identidad" name="carnet_identidad" class="w-full p-2 mb-4 border" required />
 
         <label class="block mb-2">Sexo:</label>
-        <input type="email" [(ngModel)]="pacienteAEditar.sexo" name="sexo" class="w-full p-2 mb-4 border" required />
+        <input type="text" [(ngModel)]="pacienteAEditar.sexo" name="sexo" class="w-full p-2 mb-4 border" required />
 
         <div class="flex justify-end">
           <button type="button" class="px-4 py-2 mr-4 text-white bg-gray-500 rounded" (click)="cerrarModal()">Cancelar</button>

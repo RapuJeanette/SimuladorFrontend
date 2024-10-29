@@ -53,8 +53,8 @@ export class PacientesComponent {
       });
   }
 
-  editarPaciente(id: string) {
-    this.http.put(`http://127.0.0.1:8000/pacientes/${id}`, this.nuevoPaciente)
+  editarPaciente() {
+    this.http.put('http://127.0.0.1:8000/pacientes/', this.pacienteAEditar)
       .subscribe(() => {
         this.obtenerPacientes();  // Actualizar la lista de doctores
         this.cerrarModal();
@@ -62,7 +62,7 @@ export class PacientesComponent {
   }
 
   eliminarPaciente(id: string) {
-    this.http.delete(`http://127.0.0.1:8000/pacientes/${id}`)
+    this.http.delete('http://127.0.0.1:8000/pacientes/${id}')
       .subscribe(() => {
         this.obtenerPacientes();  // Actualizar la lista de doctores
       });
@@ -77,7 +77,7 @@ export class PacientesComponent {
     this.mostrarModalEditar = true;
     const pacienteParaEditar = this.pacientes.find(paciente => paciente.id === id);
     if (pacienteParaEditar){
-      this.pacienteAEditar = { ... pacienteParaEditar}
+      this.pacienteAEditar = { ...pacienteParaEditar}
     }
   }
 
