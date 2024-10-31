@@ -46,7 +46,7 @@ export class DoctorComponent implements OnInit {
   }
 
   editarDoctor(id: string) {
-    this.http.put(`http://127.0.0.1:8000/doctores/${id}`, this.nuevoDoctor)
+    this.http.put(`http://127.0.0.1:8000/doctores/${id}`, this.doctorAEditar)
       .subscribe(() => {
         this.obtenerDoctores();  // Actualizar la lista de doctores
         this.cerrarModal();

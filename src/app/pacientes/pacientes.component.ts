@@ -62,7 +62,7 @@ export class PacientesComponent {
   }
 
   eliminarPaciente(id: string) {
-    this.http.delete('http://127.0.0.1:8000/pacientes/${id}')
+    this.http.delete(`http://127.0.0.1:8000/pacientes/${id}`)
       .subscribe(() => {
         this.obtenerPacientes();  // Actualizar la lista de doctores
       });

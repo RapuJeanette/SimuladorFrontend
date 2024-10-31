@@ -75,9 +75,8 @@ export class CitasComponent implements OnInit {
   }
 }
 
-  // Método para eliminar una cita
   eliminarCita(citaId: string) {
-    this.http.delete('http://localhost:8000/citas/${citaId}').subscribe(response => {
+    this.http.delete(`http://localhost:8000/citas/${citaId}`).subscribe(() => {
       this.obtenerCitas(); // Actualiza la lista de citas
     });
   }
