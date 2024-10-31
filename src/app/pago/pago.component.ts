@@ -36,11 +36,11 @@ export class PagoComponent implements OnInit {
   }
 
   obtenerPagos() {
-    this.http.get('http://localhost:8000/pagos').subscribe((response: any) => { this.pagos = response });
+    this.http.get('https://simuladorbackend.onrender.com/pagos').subscribe((response: any) => { this.pagos = response });
   }
 
   obtenerPacientes() {
-    this.http.get('http://localhost:8000/pacientes/').subscribe((data: any) => {
+    this.http.get('https://simuladorbackend.onrender.com/pacientes/').subscribe((data: any) => {
         console.log('Datos recibidos:', data);  // Agrega esto para ver qué datos estás obteniendo
         this.pacientes = data;  // Almacena los pacientes en la variable
     }, error => {
@@ -61,7 +61,7 @@ export class PagoComponent implements OnInit {
   }
 
   guardarPago() {
-    this.http.post('http://localhost:8000/pagos', this.nuevoPago)
+    this.http.post('https://simuladorbackend.onrender.com/pagos', this.nuevoPago)
       .subscribe(() => {
         this.obtenerPagos();
         this.mostrandoFormulario = false;
@@ -69,7 +69,7 @@ export class PagoComponent implements OnInit {
   }
 
   editarPago(id: string) {
-    this.http.put(`http://127.0.0.1:8000/pagos/${id}`, this.nuevoPago)
+    this.http.put(`https://simuladorbackend.onrender.com/pagos/${id}`, this.nuevoPago)
     .subscribe(() => {
       this.obtenerPagos();
       this.obtenerPacientes();
@@ -79,7 +79,7 @@ export class PagoComponent implements OnInit {
 
   actualizarPago() {
     if (this.pagoAEditar) {
-      this.http.put(`http://localhost:8000/pagos/${this.pagoAEditar.id}`, this.pagoAEditar)
+      this.http.put(`https://simuladorbackend.onrender.com/pagos/${this.pagoAEditar.id}`, this.pagoAEditar)
         .subscribe(() => {
           this.obtenerPagos();
           this.obtenerPacientes();
@@ -97,7 +97,7 @@ export class PagoComponent implements OnInit {
   }
 
   eliminarPago(id: string) {
-    this.http.delete(`http://localhost:8000/pagos/${id}`).subscribe(() => {
+    this.http.delete(`https://simuladorbackend.onrender.com/pagos/${id}`).subscribe(() => {
       this.obtenerPagos();
     });
   }

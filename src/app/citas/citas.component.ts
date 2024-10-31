@@ -33,25 +33,25 @@ export class CitasComponent implements OnInit {
   }
 
   obtenerCitas() {
-    this.http.get('http://localhost:8000/citas/').subscribe((data: any) => {
+    this.http.get('https://simuladorbackend.onrender.com/citas/').subscribe((data: any) => {
       this.citas = data; // Almacena las citas en la variable
     });
   }
 
   obtenerPacientes() {
-    this.http.get<any[]>('http://localhost:8000/pacientes/').subscribe(data => {
+    this.http.get<any[]>('https://simuladorbackend.onrender.com/pacientes/').subscribe(data => {
       this.pacientes = data; // Almacena los pacientes en la variable
     });
   }
 
   obtenerDoctores() {
-    this.http.get<any[]>('http://localhost:8000/doctores/').subscribe(data => {
+    this.http.get<any[]>('https://simuladorbackend.onrender.com/doctores/').subscribe(data => {
       this.doctores = data; // Almacena los doctores en la variable
     });
   }
 
   crearCita() {
-    this.http.post('http://localhost:8000/citas/', this.nuevaCita).subscribe(()=> {
+    this.http.post('https://simuladorbackend.onrender.com/citas/', this.nuevaCita).subscribe(()=> {
       this.obtenerCitas(); // Actualiza la lista de citas
       this.cerrarModalCrear();
       this.limpiarFormulario(); // Limpia el formulario
@@ -60,7 +60,7 @@ export class CitasComponent implements OnInit {
   // Método para editar una cita existente
   editarCita() {
   if (this.citaIdEdicion) {
-    this.http.put(`http://localhost:8000/citas/${this.citaIdEdicion}`, this.nuevaCita).subscribe(
+    this.http.put(`https://simuladorbackend.onrender.com/citas/${this.citaIdEdicion}`, this.nuevaCita).subscribe(
       response => {
         this.obtenerCitas(); // Actualiza la lista de citas
         this.cerrarModalEditar();

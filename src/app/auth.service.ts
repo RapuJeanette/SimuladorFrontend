@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000';  // Cambia la URL según tu API
+  private apiUrl = 'https://simuladorbackend.onrender.com';  // Cambia la URL según tu API
 
   constructor(private http: HttpClient, private router: Router) { }
   private correoUsuario: string = '';
