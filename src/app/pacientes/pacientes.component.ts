@@ -39,14 +39,14 @@ export class PacientesComponent {
   }
 
   obtenerPacientes() {
-    this.http.get('http://127.0.0.1:8000/pacientes/')
+    this.http.get('https://simuladorbackend.onrender.com/pacientes/')
       .subscribe((response: any) => {
         this.pacientes = response;
       });
   }
 
   agregarPaciente() {
-    this.http.post('http://127.0.0.1:8000/pacientes/', this.nuevoPaciente)
+    this.http.post('https://simuladorbackend.onrender.com/pacientes/', this.nuevoPaciente)
       .subscribe(() => {
         this.obtenerPacientes();  // Actualizar la lista de doctores
         this.cerrarModal();
@@ -54,7 +54,7 @@ export class PacientesComponent {
   }
 
   editarPaciente() {
-    this.http.put('http://127.0.0.1:8000/pacientes/', this.pacienteAEditar)
+    this.http.put('https://simuladorbackend.onrender.com/pacientes/', this.pacienteAEditar)
       .subscribe(() => {
         this.obtenerPacientes();  // Actualizar la lista de doctores
         this.cerrarModal();
@@ -62,7 +62,7 @@ export class PacientesComponent {
   }
 
   eliminarPaciente(id: string) {
-    this.http.delete('http://127.0.0.1:8000/pacientes/${id}')
+    this.http.delete('https://simuladorbackend.onrender.com/pacientes/${id}')
       .subscribe(() => {
         this.obtenerPacientes();  // Actualizar la lista de doctores
       });

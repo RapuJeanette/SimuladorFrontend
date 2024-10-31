@@ -31,14 +31,14 @@ export class DoctorComponent implements OnInit {
   }
 
   obtenerDoctores() {
-    this.http.get('http://127.0.0.1:8000/doctores/')
+    this.http.get('https://simuladorbackend.onrender.com/doctores/')
       .subscribe((response: any) => {
         this.doctores = response;
       });
   }
 
   agregarDoctor() {
-    this.http.post('http://127.0.0.1:8000/doctores/', this.nuevoDoctor)
+    this.http.post('https://simuladorbackend.onrender.com/doctores/', this.nuevoDoctor)
       .subscribe(() => {
         this.obtenerDoctores();  // Actualizar la lista de doctores
         this.cerrarModal();
@@ -46,7 +46,7 @@ export class DoctorComponent implements OnInit {
   }
 
   editarDoctor(id: string) {
-    this.http.put(`http://127.0.0.1:8000/doctores/${id}`, this.nuevoDoctor)
+    this.http.put(`https://simuladorbackend.onrender.com/doctores/${id}`, this.nuevoDoctor)
       .subscribe(() => {
         this.obtenerDoctores();  // Actualizar la lista de doctores
         this.cerrarModal();
@@ -54,7 +54,7 @@ export class DoctorComponent implements OnInit {
   }
 
   eliminarDoctor(id: string) {
-    this.http.delete(`http://127.0.0.1:8000/doctores/${id}`)
+    this.http.delete(`https://simuladorbackend.onrender.com/doctores/${id}`)
       .subscribe(() => {
         this.obtenerDoctores();  // Actualizar la lista de doctores
       });

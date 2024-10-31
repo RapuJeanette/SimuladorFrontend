@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PagoService {
-  private apiUrl = 'http://127.0.0.1:8000/pagos'; // Cambia según tu configuración
+  private apiUrl = 'https://simuladorbackend.onrender.com/pagos'; // Cambia según tu configuración
 
   constructor(private http: HttpClient) { }
 
