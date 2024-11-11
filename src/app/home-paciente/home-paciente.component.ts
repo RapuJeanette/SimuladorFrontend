@@ -15,14 +15,14 @@ export class HomePacienteComponent {
   isUserMenuOpen = false;
   correo: string | null = null;
   constructor(private router: Router, private authService: AuthService) {
-    
+
   }
   toggleUserMenu() {
     this.isUserMenuOpen = !this.isUserMenuOpen;
   }
 
   crearImagen3D() {
-    this.router.navigate(['/crear-imagen']);
+    this.router.navigate(['/seleccion-parte']);
   }
 
   ngOnInit(): void {
@@ -38,7 +38,7 @@ export class HomePacienteComponent {
   buscarProfesional() {
     this.router.navigate(['/buscar-profesional']);
   }
-  
+
   navigateTo(route: string) {
     this.router.navigate([route]);
   }

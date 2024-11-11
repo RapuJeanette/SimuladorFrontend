@@ -1,0 +1,10 @@
+/* Centra los círculos de los pasos y les da un diseño */
+.w-12.h-12 {
+  width: 3rem;
+  height: 3rem;
+}
+
+button:disabled {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+}

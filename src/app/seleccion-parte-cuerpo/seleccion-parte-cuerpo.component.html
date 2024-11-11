@@ -1,0 +1,33 @@
+<div class="flex flex-col items-center mt-10 space-y-6">
+  <h1 class="text-2xl font-bold text-gray-800">Seleccione la parte del cuerpo para subir imágenes</h1>
+
+  <!-- Contenedor de opciones -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Recuadro para la cara -->
+    <div
+      (click)="seleccionarParte('cara')"
+      class="cursor-pointer p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img src="assets/images/cara.jpg" alt="Cara" class="w-full h-48 object-cover rounded-lg">
+      <p class="text-center mt-4 font-semibold text-gray-700">Cara</p>
+    </div>
+
+    <!-- Recuadro para el cuerpo -->
+    <div
+      (click)="seleccionarParte('cuerpo')"
+      class="cursor-pointer p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img src="assets/images/cuerpo.jpg" alt="Cuerpo" class="w-full h-48 object-cover rounded-lg">
+      <p class="text-center mt-4 font-semibold text-gray-700">Cuerpo</p>
+    </div>
+
+    <!-- Recuadro para el pecho -->
+    <div
+      (click)="seleccionarParte('pecho')"
+      class="cursor-pointer p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
+    >
+      <img src="assets/images/pecho.jpg" alt="Pecho" class="w-full h-48 object-cover rounded-lg">
+      <p class="text-center mt-4 font-semibold text-gray-700">Pecho</p>
+    </div>
+  </div>
+
+</div>
+

@@ -1,0 +1,34 @@
+<div class="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg mt-10">
+  <!-- Video -->
+  <div class="mb-6">
+    <video src="assets/videos/mammo-tutorial.mp4" controls class="w-full rounded-lg shadow-lg">
+      Tu navegador no soporta la etiqueta de video.
+    </video>
+  </div>
+
+  <!-- Texto explicativo -->
+  <p class="text-gray-800 text-lg font-medium mb-6">
+    Mide la distancia entre un pezón y el otro, tomando como punto de referencia el centro del pezón tal y como se muestra en el video. Use la medida real para obtener un 3D preciso.
+  </p>
+
+  <!-- Campo de entrada para la medida en cm -->
+  <label class="block text-gray-700 font-semibold mb-2" for="medida">
+    Ingrese la medida en centímetros:
+  </label>
+  <input
+    type="number"
+    id="medida"
+    [(ngModel)]="medida"
+    placeholder="cm"
+    class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  />
+
+  <!-- Botón de continuar -->
+  <button
+    (click)="continuar()"
+    class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300"
+  >
+    Continuar
+  </button>
+</div>
+
