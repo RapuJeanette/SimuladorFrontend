@@ -1,0 +1,29 @@
+<div class="relative w-full h-screen bg-gray-800">
+  <!-- Contenedor para el visor 3D -->
+  <div class="grid place-items-center min-h-screen bg-gray-800">
+    <div class="relative w-2/3 h-96">
+      <div id="viewer3d" class="absolute inset-0"></div>
+    </div>
+  </div>
+
+  <!-- Controles adicionales -->
+  <div class="absolute top-4 left-4 z-20 p-4 bg-white rounded-lg shadow-lg">
+    <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
+      Cargar Modelo
+    </button>
+  </div>
+
+  <!-- Información del visualizador -->
+  <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center text-white">
+    <p class="text-lg font-bold">Visualizador 3D de Modelo</p>
+    <p class="text-sm">Arrastra para rotar, usa la rueda para acercar/alejar.</p>
+  </div>
+</div>
+
+<div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 text-white">
+  <label for="zoomControl" class="block text-sm mb-2">Ajustar Zoom</label>
+  <input type="range" id="zoomControl" class="w-48 h-2 bg-gray-400 rounded-full" min="1" max="10" value="5">
+</div>
+
+
+

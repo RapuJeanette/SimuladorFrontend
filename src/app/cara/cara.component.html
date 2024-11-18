@@ -34,18 +34,18 @@
     />
 
     <!-- Vista previa de la imagen subida -->
-    <div *ngIf="foto" class="mb-4">
-      <h4 class="text-lg font-medium text-gray-800">Vista previa:</h4>
-      <img [src]="foto" alt="Vista previa" class="w-full h-64 object-cover rounded-lg">
+    <div *ngFor="let imagen of fotosPreview; let i = index" class="mb-6">
+      <h4 class="text-lg font-medium text-gray-800">Vista previa foto {{ i + 1 }}:</h4>
+      <img [src]="imagen" alt="Vista previa" class="w-full h-64 object-cover rounded-lg">
 
     <div class="flex justify-center mt-4">
       <button
-        (click)="borrarFoto()"
+        (click)="borrarFoto(i)"
         class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold mx-2 hover:bg-red-600 transition duration-300">
         Borrar
       </button>
       <button
-        (click)="girarFoto()"
+        (click)="girarFoto(i)"
         class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold mx-2 hover:bg-blue-600 transition duration-300">
         Girar
       </button>
@@ -55,8 +55,14 @@
     <button
       (click)="continuar()"
       class="w-full bg-indigo-600 text-white py-4 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300"
-      [disabled]="!foto">
+      [disabled]="fotos.length === 0">
       Continuar
+    </button>
+    <button
+      (click)="enviarFotos()"
+      class="w-full bg-green-600 text-white py-4 rounded-lg font-semibold hover:bg-green-700 transition duration-300"
+      [disabled]="fotos.length === 0">
+      Enviar Fotos
     </button>
   </div>
 </div>

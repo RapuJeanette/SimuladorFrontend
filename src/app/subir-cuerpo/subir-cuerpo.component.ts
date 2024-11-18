@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-subir-cuerpo',
@@ -11,9 +13,13 @@ import { CommonModule } from '@angular/common';
 })
 export class SubirCuerpoComponent {
   currentStep: number = 0; // Indica el paso actual (0 = izquierda, 1 = centro, 2 = derecha)
-  foto: string | ArrayBuffer | null = null; // Almacena la foto cargada
-  rotationAngle: number = 0;
-  // Los pasos con su correspondiente texto
+  fotos: File[] = [];
+  rotationAngles: number[] = [];
+  fotosParaEnviar: File[] = [];
+  fotosPreview: string[] = [];
+
+  constructor(private http: HttpClient, private router: Router) { }
+
   pasos = [
     { texto: 'Izquierdo', activo: true },
     { texto: 'Adelante', activo: false },
@@ -23,25 +29,32 @@ export class SubirCuerpoComponent {
 
   // Función para manejar la subida de fotos
   subirFoto(event: any): void {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.foto = reader.result; // Asigna la imagen a la vista previa
-      this.rotationAngle = 0;
-    };
-    if (file) {
-      reader.readAsDataURL(file); // Lee el archivo como una URL de datos
+    const files = event.target.files;
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        this.fotos.push(file);
+
+        // Leer la imagen como URL para vista previa
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.fotosPreview.push(e.target.result); // Guardar la URL en fotosPreview
+        };
+        reader.readAsDataURL(file);  // Convertir el archivo a base64
+      }
     }
   }
 
-  borrarFoto(): void {
-    this.foto = null; // Elimina la foto de la vista previa
-    this.rotationAngle = 0; // Resetea el ángulo de rotación
+
+  borrarFoto(index: number): void {
+    this.fotos.splice(index, 1);  // Elimina la foto en el índice especificado
+    this.rotationAngles.splice(index, 1);
+    this.fotosParaEnviar.splice(index, 1);
   }
 
   // Función para girar la foto
-  girarFoto(): void {
-    this.rotationAngle = (this.rotationAngle + 90) % 360; // Rota la imagen en incrementos de 90 grados
+  girarFoto(index: number): void {
+    this.rotationAngles[index] = (this.rotationAngles[index] + 90) % 360;  // Rota la foto en incrementos de 90 grados
   }
 
   continuar(): void {
@@ -49,7 +62,30 @@ export class SubirCuerpoComponent {
       this.pasos[this.currentStep].activo = false; // Desactiva el paso actual
       this.currentStep++; // Avanza al siguiente paso
       this.pasos[this.currentStep].activo = true; // Activa el siguiente paso
-      this.foto = null; // Limpia la foto para el siguiente paso
     }
+  }
+
+  enviarFotos() {
+    if (this.fotos.length === 0) {
+      console.log("No hay fotos para enviar");
+      return;
+    }
+
+    const formData = new FormData();
+    this.fotos.forEach((foto) => {
+      formData.append('fotos', foto, foto.name);  // 'fotos' es el nombre del campo esperado por el backend
+    });
+
+    // Enviar las fotos al backend a través de HTTP POST
+    this.http.post('http://localhost:8000/subir-fotos/', formData).subscribe(
+      (response: any) => {
+        console.log('Fotos enviadas correctamente:', response);
+        this.router.navigate(['/visualizador3d']);
+      },
+      (error) => {
+        console.error('Error al enviar fotos:', error);
+        // Aquí podrías mostrar un mensaje de error en la UI
+      }
+    );
   }
 }

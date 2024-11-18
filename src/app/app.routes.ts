@@ -21,6 +21,7 @@ import { CaraComponent } from './cara/cara.component'
 import { SubirCuerpoComponent } from './subir-cuerpo/subir-cuerpo.component'
 import { SubirFotoComponent } from './subir-foto/subir-foto.component'
 import { GuiaImagenComponent } from './guia-imagen/guia-imagen.component'
+import { Visualizador3DComponent } from './visualizador3-d/visualizador3-d.component'
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },  // Ruta predeterminada para la página de inicio
@@ -37,6 +38,7 @@ export const routes: Routes = [
   { path: 'pecho', component: PechoComponent},
   { path: 'subir-cuerpo', component: SubirCuerpoComponent},
   { path: 'subir-foto', component: SubirFotoComponent},
+  { path: 'visualizador3d', component: Visualizador3DComponent},
   { path: 'guia-imagen/:parte', component: GuiaImagenComponent},
   { path: 'editar-perfil/:correo', component: EditarPerfilComponent },
   { path: 'citas', component: CitasComponent, canActivate: [AuthGuard] },
