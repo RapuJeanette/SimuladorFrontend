@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class EditarPerfilComponent implements OnInit {
   pacienteData = {
+    usuario_id: '',  // Agregar usuario_id aquí
     correo: '',
     telefono: '',
     direccion: '',
@@ -36,15 +37,18 @@ export class EditarPerfilComponent implements OnInit {
     }
     
     this.pacienteData.correo = correo;
+    this.pacienteData.usuario_id = correo;  // Asignar correo como usuario_id
     this.cargarDatosUsuario();
   }
+
   mostrarAlerta() {
     this.showAlert = true;
     setTimeout(() => {
       this.showAlert = false;
-      this.router.navigate(['/home-paciente']); // Redirige al home después de actualizar
+      this.router.navigate(['/home-paciente']);
     }, 2000);
   }
+
   cargarDatosUsuario() {
     this.authService.getPacientePorCorreo(this.pacienteData.correo).subscribe(
       (response: any) => {
@@ -65,7 +69,7 @@ export class EditarPerfilComponent implements OnInit {
       },
       (error: any) => {
         console.error('Error al cargar los datos del usuario:', error);
-        this.isNewProfile = error.status === 404; // Verifica si el perfil no existe
+        this.isNewProfile = error.status === 404;
       }
     );
   }
@@ -74,43 +78,29 @@ export class EditarPerfilComponent implements OnInit {
     if (this.isNewProfile) {
       this.authService.crearPaciente(this.pacienteData).subscribe(
         () => {
-          alert('Datos guardados exitosamente.');
-          this.router.navigate(['/home-paciente']);
+          this.mostrarAlerta();
         },
         (error) => console.error('Error al crear el paciente:', error)
       );
     } else {
       this.authService.actualizarPaciente(this.pacienteData).subscribe(
         () => {
-          alert('Datos actualizados exitosamente.');
-          this.router.navigate(['/home-paciente']);
+          this.mostrarAlerta();
         },
         (error) => console.error('Error al actualizar el paciente:', error)
       );
     }
   }
 
-  crearPaciente() {
-    this.authService.crearPaciente(this.pacienteData).subscribe(
-      (response: any) => console.log("Paciente creado exitosamente:", response),
-      (error: any) => console.error("Error al crear el paciente:", error)
-    );
-  }
-
-  actualizarPaciente() {
-    this.authService.actualizarPaciente(this.pacienteData).subscribe(
-      (response: any) => console.log("Paciente actualizado exitosamente:", response),
-      (error: any) => console.error("Error al actualizar el paciente:", error)
-    );
-  }
-
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
   goToHomePaciente() {
     this.router.navigate(['/home-paciente']);
   }
+
   toggleUserMenu(): void {
     this.isUserMenuOpen = !this.isUserMenuOpen;
   }
