@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import * as THREE from 'three';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'
 import { CommonModule } from '@angular/common';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 @Component({
@@ -15,13 +15,18 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
   styleUrl: './visualizador3-d.component.css'
 })
 export class Visualizador3DComponent implements OnInit, OnDestroy {
-  scene: THREE.Scene = new THREE.Scene();
-  camera: THREE.PerspectiveCamera =  new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
-  modelo3dUrl = 'https://res.cloudinary.com/dvc8eh9sn/raw/upload/v1731454514/modelos_3d/ewipjktw3llqv2yldevp.obj';  // Cambia la URL si es necesario
-  controls: OrbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+  scene: THREE.Scene;
+  camera: THREE.PerspectiveCamera;
+  renderer: THREE.WebGLRenderer =  new THREE.WebGLRenderer() ;
+  modelo3dUrl = 'https://res.cloudinary.com/dvc8eh9sn/image/upload/v1733031578/modelos_3d/modelo_glb.glb';  // Cambia la URL si es necesario
+  controls: OrbitControls;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any, private http: HttpClient, private route: ActivatedRoute) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient, private router: Router) {
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000); // Aspecto inicial genérico
+    this.renderer = new THREE.WebGLRenderer();
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+  }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -29,19 +34,19 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Inicializar la configuración de Three.js
   initThreeJS(): void {
-    // Crear la escena
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xffffff);
-    // Crear la cámara
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const viewerElement = document.getElementById('viewer3d');
+    const viewerRect = viewerElement?.getBoundingClientRect();
+    const width = viewerRect?.width || 800;  // Si no encuentra el contenedor, usa un tamaño predeterminado
+    const height = viewerRect?.height || 600;
+
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
     this.camera.position.z = 1;
 
-    // Crear el renderizador
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setSize(window.innerWidth/2, window.innerHeight/2);  // Ajusta el tamaño del renderizador
-    document.getElementById('viewer3d')?.appendChild(this.renderer.domElement);  // Agrega el canvas al contenedor
+    this.renderer.setSize(width, height);
+    this.renderer.setClearColor(0xffffff);
+    viewerElement?.appendChild(this.renderer.domElement);
 
     // Agregar controles de la cámara para mover el objeto
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -59,36 +64,34 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
     this.scene.add(directionalLight);
 
     this.loadModel();
+
+    window.addEventListener('resize', () => {
+      const viewerElement = document.getElementById('viewer3d');
+      const viewerRect = viewerElement?.getBoundingClientRect();
+      const width = viewerRect?.width || 0;
+      const height = viewerRect?.height || 0;
+
+      this.camera.aspect = width / height;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(width, height);
+    });
   }
 
   loadModel(): void {
-    const loader = new OBJLoader();
+    const loader = new GLTFLoader();
     loader.load(
       this.modelo3dUrl,
-      (obj) => {
-        // Recorrer todos los objetos del modelo cargado
-        obj.traverse((child) => {
-          if (child instanceof THREE.Mesh) {
-            child.material = new THREE.MeshStandardMaterial({ color: 0x0077ff, roughness: 0.5 });
-            child.castShadow = true;  // Hacer que el objeto proyecte sombra
-            child.receiveShadow = true;  // Hacer que el objeto reciba sombra
-          }
-        });
-
-        // Añadir el objeto a la escena
-        this.scene?.add(obj);
-
-        obj.position.set(0, 0.5, 0);  // Ajusta la posición
-        obj.scale.set(1, 1, 1);  // Escala del modelo (ajusta según sea necesario)
-        obj.rotation.x = Math.PI / 6;
-        obj.rotation.y = Math.PI / 10;
-        obj.rotation.z = Math.PI;
+      (gltf: { scene: any; }) => {
+        const model = gltf.scene;
+        model.position.set(0,0,0);
+        model.scale.set(1,1,1);
+        this.scene?.add(model);
         this.animate();
       },
-      (xhr) => {
+      (xhr: { loaded: number; total: number; }) => {
         console.log((xhr.loaded / xhr.total * 100) + '% cargado');
       },
-      (error) => {
+      (error: any) => {
         console.error('Error al cargar el modelo 3D:', error);
       }
     );
@@ -100,8 +103,6 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
     this.renderer.render(this.scene!, this.camera!);  // Renderiza la escena con la cámara
   }
 
-
-
   ngOnDestroy(): void {
     if (this.controls) {
       this.controls.dispose();
@@ -111,4 +112,26 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
     }
   }
 
+  zoomIn(): void {
+    this.camera.position.z -= 0.5; // Acerca la cámara
+  }
+
+  // Función de Zoom Out
+  zoomOut(): void {
+    this.camera.position.z += 0.5; // Aleja la cámara
+  }
+
+  // Función para ajustar el zoom con el control de rango
+  adjustZoom(event: any): void {
+    const zoomValue = event.target.value;
+    this.camera.position.z = 5 - zoomValue; // Ajusta el zoom según el valor
+  }
+
+  goToPayment(): void {
+    this.router.navigate(['/payment']); // Redirige a la ruta deseada
+  }
+  
+  goBack(): void {
+    this.router.navigate(['/home-paciente']); // Redirige a la ruta deseada
+  }
 }

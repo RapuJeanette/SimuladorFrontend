@@ -1,0 +1,76 @@
+<!-- Vista de Pago Exitoso -->
+<div *ngIf="paymentSuccess" class="max-w-lg p-8 mx-auto bg-white rounded-lg shadow-xl">
+  <div class="flex items-center justify-center">
+    <div class="text-center">
+      <!-- Icono de éxito -->
+      <div class="mb-4 text-6xl text-green-500">
+        <i class="fas fa-check-circle"></i>
+      </div>
+
+      <!-- Título de éxito -->
+      <h2 class="mb-4 text-3xl font-semibold text-gray-800">¡Pago Exitoso!</h2>
+
+      <!-- Mensaje de confirmación -->
+      <p class="mb-6 text-lg text-gray-600">Gracias por confiar en nosotros. Tu procedimiento estético ha sido confirmado.</p>
+
+      <!-- Detalles del pago -->
+      <div class="mb-6 text-sm text-gray-500">
+        <p><strong>Monto:</strong> 100 BOB</p>
+        <p><strong>Procedimiento:</strong> Estético Facial</p>
+        <p><strong>Fecha:</strong> 01 de Diciembre, 2024</p>
+      </div>
+
+      <!-- Botón de retorno -->
+      <div class="flex justify-center">
+        <button
+          class="px-8 py-3 text-white transition duration-300 bg-green-600 rounded-full shadow-md hover:bg-green-700"
+          (click)="goBack()"
+        >
+          Continuar
+        </button>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="mt-6 text-sm text-gray-500">
+        <p>Si tienes alguna pregunta, no dudes en <a href="mailto:support@ejemplo.com" class="text-blue-600 hover:underline">contactarnos</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Vista de Formulario de Pago -->
+<div *ngIf="!paymentSuccess" class="max-w-lg p-8 mx-auto bg-white rounded-lg shadow-xl">
+  <h2 class="mb-6 text-3xl font-semibold text-center text-gray-800">Pago por Procedimiento Estético</h2>
+
+  <!-- Descripción del procedimiento -->
+  <div class="mb-8 text-lg text-center text-gray-600">
+    <p>¡Gracias por confiar en nosotros! A continuación, puedes realizar el pago para tu procedimiento estético.</p>
+    <p class="mt-4 text-xl font-bold text-blue-600">Total: 100 BOB</p>
+  </div>
+
+  <!-- Card Element -->
+  <div id="card-element" class="p-4 mb-6 bg-gray-100 border border-gray-300 rounded-lg">
+    <!-- Aquí se renderiza el formulario de la tarjeta -->
+  </div>
+
+  <!-- Mensaje de error -->
+  <div id="card-errors" role="alert" class="mb-4 text-sm text-red-500"></div>
+
+  <!-- Botón de pago -->
+  <div class="flex justify-center mb-6">
+    <button
+      [disabled]="isProcessing"
+      (click)="handlePayment()"
+      class="w-full max-w-xs px-8 py-4 text-white transition duration-300 rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600 hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"
+    >
+      {{ isProcessing ? 'Procesando...' : 'Pagar Procedimiento' }}
+    </button>
+  </div>
+
+  <!-- Información adicional -->
+  <div class="text-sm text-center text-gray-600">
+    <p>Al realizar el pago, aceptas nuestros <a href="#" class="text-blue-600 hover:underline">términos y condiciones</a>.</p>
+    <p class="mt-2">Este pago es por el procedimiento estético que elegiste con total confianza.</p>
+  </div>
+</div>
+

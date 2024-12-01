@@ -1,0 +1,59 @@
+<div class="min-h-screen p-6 bg-gray-100">
+  <h3 class="mb-6 text-2xl font-bold text-center">Historial de Modelos</h3>
+
+  <!-- Sección de Modelos "Antes" -->
+  <div>
+    <h4 class="mb-4 text-xl font-semibold text-gray-700">Modelos "Antes"</h4>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        *ngFor="let modelo of historialAntes"
+        class="p-4 transition duration-300 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg">
+        <h5 class="mb-2 text-lg font-semibold text-gray-700">Estado Inicial</h5>
+        <p class="mb-2 text-sm text-gray-600">Fecha: {{ obtenerFechaFormateada(modelo.fecha) }}</p>
+
+        <iframe
+          *ngIf="modelo.url_modelo_3d"
+          [src]="modelo.url_modelo_3d"
+          class="w-full h-64 border border-gray-300 rounded-md"
+          frameborder="0">
+        </iframe>
+
+        <button
+          class="px-4 py-2 mt-4 text-white transition bg-blue-500 rounded hover:bg-blue-600"
+          (click)="verDetalle(modelo.id)">
+          Ver Detalle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Separador -->
+  <div class="my-10 border-t border-gray-300"></div>
+
+  <!-- Sección de Modelos "Después" -->
+  <div>
+    <h4 class="mb-4 text-xl font-semibold text-gray-700">Modelos "Después"</h4>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        *ngFor="let modelo of historialDespues"
+        class="p-4 transition duration-300 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg">
+        <h5 class="mb-2 text-lg font-semibold text-gray-700">Estado Final</h5>
+        <p class="mb-2 text-sm text-gray-600">Fecha: {{ obtenerFechaFormateada(modelo.fecha) }}</p>
+
+        <iframe
+          *ngIf="modelo.url_modelo_3d"
+          [src]="modelo.url_modelo_3d"
+          class="w-full h-64 border border-gray-300 rounded-md"
+          frameborder="0">
+        </iframe>
+
+        <button
+          class="px-4 py-2 mt-4 text-white transition bg-blue-500 rounded hover:bg-blue-600"
+          (click)="verDetalle(modelo.id)">
+          Ver Detalle
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

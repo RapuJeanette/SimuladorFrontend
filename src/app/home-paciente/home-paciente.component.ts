@@ -35,6 +35,9 @@ export class HomePacienteComponent {
   editarPerfil(): void {
     this.router.navigate(['home-paciente/editar-perfil']); // Redirige a la vista de edición de perfil
   }
+  verHistorial(): void {
+    this.router.navigate(['visualizador3d']); // Redirige a la vista de edición de perfil
+  }
   buscarProfesional() {
     this.router.navigate(['/buscar-profesional']);
   }

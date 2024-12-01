@@ -18,6 +18,7 @@ import { SeleccionParteCuerpoComponent } from './seleccion-parte-cuerpo/seleccio
 import { CuerpoComponent } from './cuerpo/cuerpo.component'
 import { PechoComponent } from './pecho/pecho.component'
 import { CaraComponent } from './cara/cara.component'
+import { PaymentComponentComponent } from './payment-component/payment-component.component'
 import { SubirCuerpoComponent } from './subir-cuerpo/subir-cuerpo.component'
 import { SubirFotoComponent } from './subir-foto/subir-foto.component'
 import { GuiaImagenComponent } from './guia-imagen/guia-imagen.component'
@@ -38,6 +39,7 @@ export const routes: Routes = [
   { path: 'pecho', component: PechoComponent},
   { path: 'subir-cuerpo', component: SubirCuerpoComponent},
   { path: 'subir-foto', component: SubirFotoComponent},
+  { path: 'payment', component: PaymentComponentComponent},
   { path: 'visualizador3d', component: Visualizador3DComponent},
   { path: 'guia-imagen/:parte', component: GuiaImagenComponent},
   { path: 'editar-perfil/:correo', component: EditarPerfilComponent },
