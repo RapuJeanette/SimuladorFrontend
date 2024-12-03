@@ -1,0 +1,100 @@
+<div class="max-w-2xl mx-auto mb-4">
+  <button (click)="volverAtras()"
+    class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 flex items-center space-x-2">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+    <span>Volver</span>
+  </button>
+</div>
+
+<div class="max-w-2xl mx-auto p-8 bg-white rounded-xl shadow-xl border border-gray-300">
+  <div class="text-center mb-6">
+    <h1 class="text-4xl font-extrabold text-gray-800">Jorge Montero</h1>
+    <p class="text-xl text-gray-500">Cirujano Plástico</p>
+  </div>
+
+  <div class="space-y-4 mb-6">
+    <div class="flex items-center justify-start space-x-2">
+      <span class="text-lg text-gray-700 font-medium">Correo:</span>
+      <p class="text-lg text-blue-600 hover:underline">jorgemontero&#64;gmail.com</p>
+    </div>
+    <div class="flex items-center justify-start space-x-2">
+      <span class="text-lg text-gray-700 font-medium">Teléfono:</span>
+      <p class="text-lg text-gray-800">4444444</p>
+    </div>
+    <div class="flex items-center justify-start space-x-2">
+      <span class="text-lg text-gray-700 font-medium">Especialidad:</span>
+      <p class="text-lg text-gray-800">Cirujano Plástico</p>
+    </div>
+    <div class="flex items-center justify-start space-x-2">
+      <span class="text-lg text-gray-700 font-medium">Disponibilidad:</span>
+      <p class="text-lg text-gray-800">Martes</p>
+    </div>
+  </div>
+
+  <div class="flex justify-center">
+    <button
+      class="w-full max-w-xs px-8 py-3 font-bold text-white bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out hover:bg-gradient-to-l"
+      (click)="abrirModalCrear()">
+      Reservar Cita
+    </button>
+  </div>
+</div>
+
+<div *ngIf="mensaje" [ngClass]="mensajeExito ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+  class="max-w-2xl mx-auto mt-4 p-4 rounded-lg shadow-lg">
+  {{ mensaje }}
+</div>
+
+<!-- Modal -->
+<div
+  *ngIf="mostrarModalCrear"
+  class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Reservar Cita</h2>
+    <form (ngSubmit)="crearCita()">
+      <div class="mb-4">
+        <label for="fecha" class="block text-gray-700 font-medium mb-2">Fecha de la Cita:</label>
+        <input
+          id="fecha"
+          type="date"
+          [(ngModel)]="nuevaCita.fecha"
+          name="fecha"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="estado" class="block text-gray-700 font-medium mb-2">Estado:</label>
+        <select
+          id="estado"
+          [(ngModel)]="nuevaCita.estado"
+          name="estado"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="reservado">Reservado</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+      </div>
+
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          (click)="cerrarModalCrear()"
+          class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+          Confirmar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+

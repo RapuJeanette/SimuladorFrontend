@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-historial-component',
@@ -16,7 +17,8 @@ export class HistorialComponentComponent implements OnInit {
 
   constructor(
     private http: HttpClient,  // Inyectar HttpClient para hacer solicitudes
-    private router: Router  // Inyectar Router para navegar entre rutas
+    private router: Router ,
+    private location: Location // Inyectar Router para navegar entre rutas
   ) {}
 
   ngOnInit(): void {
@@ -72,9 +74,13 @@ export class HistorialComponentComponent implements OnInit {
 
   // Método para ver los detalles de una simulación (opcional)
   verDetallesSimulacion(simulacionId: string): void {
-    console.log('Simulación ID:', simulacionId); 
+    console.log('Simulación ID:', simulacionId);
     this.router.navigate(['/antesdespues', simulacionId]);
     // Aquí puedes agregar la lógica para navegar o mostrar los detalles de la simulación
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }

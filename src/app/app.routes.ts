@@ -8,6 +8,7 @@ import { CitasComponent } from './citas/citas.component';
 import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { AuthGuard } from './auth.guard';
+import { VistaDoctorComponent } from './vista-doctor/vista-doctor.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { PatientGuard } from './patient.guard';
 import { provideHttpClient, withFetch } from '@angular/common/http';
@@ -46,6 +47,7 @@ export const routes: Routes = [
   { path: 'subir-foto', component: SubirFotoComponent},
   { path: 'payment', component: PaymentComponentComponent},
   { path: 'procedimientos', component: ProcedimientosComponent},
+  { path: 'buscar-profesional', component: VistaDoctorComponent},
   { path: 'visualizador3d', component: Visualizador3DComponent},
   { path: 'guia-imagen/:parte', component: GuiaImagenComponent},
   { path: 'modelo3d', component: Modelo3DComponent },
