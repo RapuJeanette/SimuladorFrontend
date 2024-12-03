@@ -32,7 +32,7 @@ export class StripeService {
       }
       console.log('Enviando amount:', intAmount);
       const response = await this.http
-        .post<{ clientSecret: string }>(`http://localhost:8000/create-payment-intent?amount=${amount}`, { })
+        .post<{ clientSecret: string }>(`https://simuladorbackend.onrender.com/create-payment-intent?amount=${amount}`, { })
         .toPromise();
 
       if (!response) {

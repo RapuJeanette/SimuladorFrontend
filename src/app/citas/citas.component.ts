@@ -76,7 +76,7 @@ export class CitasComponent implements OnInit {
 }
 
   eliminarCita(citaId: string) {
-    this.http.delete(`http://localhost:8000/citas/${citaId}`).subscribe(() => {
+    this.http.delete(`https://simuladorbackend.onrender.com/citas/${citaId}`).subscribe(() => {
       this.obtenerCitas(); // Actualiza la lista de citas
     });
   }

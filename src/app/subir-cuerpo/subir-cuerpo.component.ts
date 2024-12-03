@@ -77,7 +77,7 @@ export class SubirCuerpoComponent {
     });
 
     // Enviar las fotos al backend a través de HTTP POST
-    this.http.post('http://localhost:8000/subir-fotos/', formData).subscribe(
+    this.http.post('https://simuladorbackend.onrender.com/subir-fotos/', formData).subscribe(
       (response: any) => {
         console.log('Fotos enviadas correctamente:', response);
         this.router.navigate(['/visualizador3d']);
