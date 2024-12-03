@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-cara',
   standalone: true,
-  imports: [ FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './cara.component.html',
   styleUrl: './cara.component.css'
 })
@@ -70,17 +70,17 @@ export class CaraComponent {
 
     const formData = new FormData();
     this.fotos.forEach((foto) => {
-      formData.append('fotos', foto, foto.name);  // 'fotos' es el nombre del campo esperado por el backend
+      formData.append('files', foto, foto.name);  // 'fotos' es el nombre del campo esperado por el backend
     });
 
-    // Enviar las fotos al backend a través de HTTP POST
-    this.http.post<{ url_modelo_3d: string }>('http://localhost:8000/subir-fotos/', formData).subscribe(
-    (response: any) => {
-      console.log('Fotos enviadas correctamente:', response);
-      const modelo3dUrl = response.url_modelo_3d;
+    this.http.post<{ model_url: string }>('https://simuladorbackend.onrender.com/upload-photos/', formData).subscribe(
+      (response: any) => {
+        console.log('Fotos enviadas correctamente:', response);
+        const modelo3dUrl = response.model_url
 
-      // Navegar a la página de visualización 3D, pasando la URL del modelo 3D como parámetro
-      this.router.navigate(['/visualizador3d'], { queryParams: { url: modelo3dUrl } });
+        this.crearEstadoSimulacion(response.model_url);
+        console.log("url"+ response.model_url);
+
       },
       (error) => {
         console.error('Error al enviar fotos:', error);
@@ -88,5 +88,36 @@ export class CaraComponent {
       }
     );
   }
+
+  crearEstadoSimulacion(urlModelo3d: string) {
+    const estadoSimulacion = {
+      tipo_estado: 'Antes',  // Este valor puede ser dinámico
+      url_modelo_3d: urlModelo3d,
+      fecha: new Date().toISOString(),
+      simulacion_id: this.generarSimulacionId() // Implementa un método para obtener o generar este ID
+    };
+
+    this.http.post('https://simuladorbackend.onrender.com/estado_simulaciones/', estadoSimulacion).subscribe(
+      (response: any) => {
+        console.log('Estado de simulación creado con éxito:', response);
+
+        // Navegar a otra vista o notificar al usuario del éxito
+        this.router.navigate(['/visualizador3d'], { queryParams: { url: urlModelo3d } });
+      },
+      (error) => {
+        console.error('Error al crear estado de simulación:', error);
+      }
+    );
+  }
+
+  generarSimulacionId(): string {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let id = 'simulacion_';
+    for (let i = 0; i < 10; i++) {
+        id += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return id;
+}
+
 
 }

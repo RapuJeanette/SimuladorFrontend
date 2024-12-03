@@ -1,0 +1,62 @@
+<div class="container p-6 mx-auto">
+  <h1 class="mb-6 text-2xl font-bold text-center text-gray-800">Procedimientos</h1>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full border border-collapse border-gray-200 rounded-lg shadow-lg table-auto">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">ID</th>
+          <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">Tipo Estado</th>
+          <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">URL Modelo 3D</th>
+          <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">Fecha</th>
+          <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">Simulación ID</th>
+          <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let procedimiento of procedimientos"
+          class="even:bg-gray-50 hover:bg-gray-100"
+        >
+          <td class="px-4 py-2 text-gray-600 border border-gray-300">
+            {{ procedimiento.id }}
+          </td>
+          <td class="px-4 py-2 text-gray-600 border border-gray-300">
+            {{ procedimiento.tipo_estado }}
+          </td>
+          <td class="px-4 py-2 text-gray-600 truncate border border-gray-300">
+            <a
+              [routerLink]="['/modelo3d']"
+              [queryParams]="{ url: procedimiento.url_modelo_3d }"
+              class="text-blue-600 underline hover:text-blue-800"
+            >
+              Ver Modelo
+            </a>
+          </td>
+
+          <td class="px-4 py-2 text-gray-600 border border-gray-300">
+            {{ procedimiento.fecha }}
+          </td>
+          <td class="px-4 py-2 text-gray-600 border border-gray-300">
+            {{ procedimiento.simulacion_id }}
+          </td>
+          <td class="px-4 py-2 text-center border border-gray-300">
+            <button
+              class="px-4 py-2 text-white transition duration-300 bg-red-500 rounded-md shadow-md hover:bg-red-600"
+              (click)="eliminarProcedimiento(procedimiento.id)"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    *ngIf="procedimientos.length === 0"
+    class="mt-6 text-lg text-center text-gray-500"
+  >
+    No se encontraron procedimientos.
+  </div>
+</div>

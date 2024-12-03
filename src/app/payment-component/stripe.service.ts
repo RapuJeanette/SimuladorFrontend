@@ -11,7 +11,7 @@ export class StripeService {
   card: StripeCardElement | undefined;
 
   constructor(private http: HttpClient) {
-    const stripePublishableKey = 'key'; // Tu clave pública de Stripe
+    const stripePublishableKey = 'pk_test_51QCka6Klm9LmT8Fzte0AZh0woZuGMXd8Flz4t2vdu10oMNrKwqHejtvsCKmIMmROSG4ubNiApDb6GedKBXafPuIA00mQPt34Tg'; // Tu clave pública de Stripe
 
     loadStripe(stripePublishableKey).then((stripe) => {
       this.stripe = stripe;

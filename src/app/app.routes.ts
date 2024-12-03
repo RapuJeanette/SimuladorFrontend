@@ -18,10 +18,14 @@ import { SeleccionParteCuerpoComponent } from './seleccion-parte-cuerpo/seleccio
 import { CuerpoComponent } from './cuerpo/cuerpo.component'
 import { PechoComponent } from './pecho/pecho.component'
 import { CaraComponent } from './cara/cara.component'
+import { AntesDespuesComponent } from './antes-despues/antes-despues.component';
+import { ProcedimientosComponent } from './procedimientos/procedimientos.component';
 import { PaymentComponentComponent } from './payment-component/payment-component.component'
 import { SubirCuerpoComponent } from './subir-cuerpo/subir-cuerpo.component'
 import { SubirFotoComponent } from './subir-foto/subir-foto.component'
 import { GuiaImagenComponent } from './guia-imagen/guia-imagen.component'
+import { Modelo3DComponent } from './modelo3-d/modelo3-d.component';
+import { HistorialComponentComponent } from './historial-component/historial-component.component';
 import { Visualizador3DComponent } from './visualizador3-d/visualizador3-d.component'
 
 export const routes: Routes = [
@@ -35,13 +39,17 @@ export const routes: Routes = [
   { path: 'pacientes', component: PacientesComponent },
   { path: 'seleccion-parte', component: SeleccionParteCuerpoComponent},
   { path: 'cuerpo', component: CuerpoComponent},
+  { path: 'historial', component: HistorialComponentComponent},
   { path: 'cara', component: CaraComponent},
   { path: 'pecho', component: PechoComponent},
   { path: 'subir-cuerpo', component: SubirCuerpoComponent},
   { path: 'subir-foto', component: SubirFotoComponent},
   { path: 'payment', component: PaymentComponentComponent},
+  { path: 'procedimientos', component: ProcedimientosComponent},
   { path: 'visualizador3d', component: Visualizador3DComponent},
   { path: 'guia-imagen/:parte', component: GuiaImagenComponent},
+  { path: 'modelo3d', component: Modelo3DComponent },
+  { path: 'antesdespues/:id', component: AntesDespuesComponent },
   { path: 'editar-perfil/:correo', component: EditarPerfilComponent },
   { path: 'citas', component: CitasComponent, canActivate: [AuthGuard] },
   { path: 'home-paciente/editar-perfil', component: EditarPerfilComponent, canActivate: [PatientGuard] },

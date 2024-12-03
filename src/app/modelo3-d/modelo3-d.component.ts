@@ -1,24 +1,25 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as THREE from 'three';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http'
-import { CommonModule } from '@angular/common';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { RouterModule } from '@angular/router';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-visualizador3-d',
+  selector: 'app-modelo3-d',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './visualizador3-d.component.html',
-  styleUrl: './visualizador3-d.component.css'
+  imports: [ RouterModule, CommonModule],
+  templateUrl: './modelo3-d.component.html',
+  styleUrl: './modelo3-d.component.css'
 })
-export class Visualizador3DComponent implements OnInit, OnDestroy {
+export class Modelo3DComponent implements OnInit, OnDestroy{
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer =  new THREE.WebGLRenderer() ;
-  modelo3dUrl: string | null = null;
+  modelo3dUrl : string = '';  // Cambia la URL si es necesario
   controls: OrbitControls;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient, private router: Router, private route: ActivatedRoute) {
@@ -29,15 +30,12 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.modelo3dUrl = params['url'] || null;
-
-      if (this.modelo3dUrl) {
-          console.log('URL del modelo 3D:', this.modelo3dUrl);
-      } else {
-          console.error('No se proporcionó la URL del modelo 3D');
+    this.route.queryParams.subscribe(params => {
+      this.modelo3dUrl = params['url'] || ''; // Asigna el valor o deja vacío si no se pasa
+      if (!this.modelo3dUrl) {
+        console.error('No se recibió la URL del modelo 3D');
       }
-  });
+    });
     if (isPlatformBrowser(this.platformId)) {
       this.initThreeJS();
     }
@@ -136,11 +134,4 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
     this.camera.position.z = 5 - zoomValue; // Ajusta el zoom según el valor
   }
 
-  goToPayment(): void {
-    this.router.navigate(['/payment']); // Redirige a la ruta deseada
-  }
-
-  goBack(): void {
-    this.router.navigate(['/home-paciente']); // Redirige a la ruta deseada
-  }
 }

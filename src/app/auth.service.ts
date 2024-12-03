@@ -62,7 +62,7 @@ export class AuthService {
   getUserName(): string | null {
     return this.isBrowser() ? localStorage.getItem('user_name') : null;
   }
-  
+
   // Método para cerrar sesión y eliminar token, rol y correo
   logout(): void {
     if (this.isBrowser()) {

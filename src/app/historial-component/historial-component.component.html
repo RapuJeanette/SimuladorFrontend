@@ -1,59 +1,37 @@
-<div class="min-h-screen p-6 bg-gray-100">
-  <h3 class="mb-6 text-2xl font-bold text-center">Historial de Modelos</h3>
-
-  <!-- Sección de Modelos "Antes" -->
-  <div>
-    <h4 class="mb-4 text-xl font-semibold text-gray-700">Modelos "Antes"</h4>
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div
-        *ngFor="let modelo of historialAntes"
-        class="p-4 transition duration-300 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg">
-        <h5 class="mb-2 text-lg font-semibold text-gray-700">Estado Inicial</h5>
-        <p class="mb-2 text-sm text-gray-600">Fecha: {{ obtenerFechaFormateada(modelo.fecha) }}</p>
-
-        <iframe
-          *ngIf="modelo.url_modelo_3d"
-          [src]="modelo.url_modelo_3d"
-          class="w-full h-64 border border-gray-300 rounded-md"
-          frameborder="0">
-        </iframe>
-
-        <button
-          class="px-4 py-2 mt-4 text-white transition bg-blue-500 rounded hover:bg-blue-600"
-          (click)="verDetalle(modelo.id)">
-          Ver Detalle
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Separador -->
-  <div class="my-10 border-t border-gray-300"></div>
-
-  <!-- Sección de Modelos "Después" -->
-  <div>
-    <h4 class="mb-4 text-xl font-semibold text-gray-700">Modelos "Después"</h4>
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div
-        *ngFor="let modelo of historialDespues"
-        class="p-4 transition duration-300 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg">
-        <h5 class="mb-2 text-lg font-semibold text-gray-700">Estado Final</h5>
-        <p class="mb-2 text-sm text-gray-600">Fecha: {{ obtenerFechaFormateada(modelo.fecha) }}</p>
-
-        <iframe
-          *ngIf="modelo.url_modelo_3d"
-          [src]="modelo.url_modelo_3d"
-          class="w-full h-64 border border-gray-300 rounded-md"
-          frameborder="0">
-        </iframe>
-
-        <button
-          class="px-4 py-2 mt-4 text-white transition bg-blue-500 rounded hover:bg-blue-600"
-          (click)="verDetalle(modelo.id)">
-          Ver Detalle
-        </button>
-      </div>
-    </div>
-  </div>
+<div *ngIf="simulaciones.length > 0; else noSimulaciones" class="max-w-8xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
+  <h3 class="text-2xl font-semibold text-gray-700 mb-4">Historial de Simulaciones</h3>
+  <table class="min-w-full border border-gray-300 bg-white rounded-lg overflow-hidden">
+    <thead>
+      <tr class="bg-gray-200 text-gray-600 uppercase text-sm">
+        <th class="py-3 px-6 text-left">ID</th>
+        <th class="py-3 px-6 text-left">Descripción</th>
+        <th class="py-3 px-6 text-left">Fecha de Creación</th>
+        <th class="py-3 px-6 text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let simulacion of simulaciones"
+        class="border-t border-gray-300 hover:bg-gray-100 transition-colors"
+      >
+        <td class="py-3 px-6">{{ simulacion.id }}</td>
+        <td class="py-3 px-6">{{ simulacion.descripcion }}</td>
+        <td class="py-3 px-6">{{ simulacion.fecha_creacion | date: 'dd/MM/yyyy' }}</td>
+        <td class="py-3 px-6 text-center">
+          <button
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            (click)="verDetallesSimulacion(simulacion.id)"
+          >
+            Ver Simulación
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
+<ng-template #noSimulaciones>
+  <div class="max-w-2xl mx-auto p-6 text-center bg-gray-100 rounded-lg shadow-lg">
+    <p class="text-gray-700 text-lg">No tienes simulaciones registradas.</p>
+  </div>
+</ng-template>
