@@ -146,7 +146,7 @@ export class CaraComponent {
       tipo_estado: 'Antes',  // Este valor puede ser dinámico
       url_modelo_3d: urlModelo3d,
       fecha: new Date().toISOString(),
-      simulacion_id: this.generarSimulacionId() // Implementa un método para obtener o generar este ID
+      simulacion_id: simulacionId // Implementa un método para obtener o generar este ID
     };
 
     this.http.post('https://simuladorbackend.onrender.com/estado_simulaciones/', estadoSimulacion).subscribe(
@@ -161,15 +161,5 @@ export class CaraComponent {
       }
     );
   }
-
-  generarSimulacionId(): string {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let id = 'simulacion_';
-    for (let i = 0; i < 10; i++) {
-      id += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-    }
-    return id;
-  }
-
 
 }
