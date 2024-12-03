@@ -3,7 +3,6 @@
   <table class="min-w-full border border-gray-300 bg-white rounded-lg overflow-hidden">
     <thead>
       <tr class="bg-gray-200 text-gray-600 uppercase text-sm">
-        <th class="py-3 px-6 text-left">ID</th>
         <th class="py-3 px-6 text-left">Descripción</th>
         <th class="py-3 px-6 text-left">Fecha de Creación</th>
         <th class="py-3 px-6 text-center">Acciones</th>
@@ -14,7 +13,6 @@
         *ngFor="let simulacion of simulaciones"
         class="border-t border-gray-300 hover:bg-gray-100 transition-colors"
       >
-        <td class="py-3 px-6">{{ simulacion.id }}</td>
         <td class="py-3 px-6">{{ simulacion.descripcion }}</td>
         <td class="py-3 px-6">{{ simulacion.fecha_creacion | date: 'dd/MM/yyyy' }}</td>
         <td class="py-3 px-6 text-center">

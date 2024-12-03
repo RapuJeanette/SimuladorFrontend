@@ -3,7 +3,6 @@
   <table class="min-w-full bg-white border">
     <thead>
       <tr>
-        <th class="px-4 py-2 border">ID</th>
         <th class="px-4 py-2 border">Nombre</th>
         <th class="px-4 py-2 border">Correo</th>
         <th class="px-4 py-2 border">Telefono</th>
@@ -14,7 +13,6 @@
     </thead>
     <tbody>
       <tr *ngFor="let doctor of doctores">
-        <td class="px-4 py-2 border">{{ doctor.id }}</td>
         <td class="px-4 py-2 border">{{ doctor.nombre }}</td>
         <td class="px-4 py-2 border">{{ doctor.correo }}</td>
         <td class="px-4 py-2 border">{{ doctor.telefono }}</td>

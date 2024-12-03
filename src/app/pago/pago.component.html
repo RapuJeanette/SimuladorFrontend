@@ -3,7 +3,6 @@
   <table class="min-w-full bg-white">
     <thead>
       <tr>
-        <th class="px-4 py-2 border">ID</th>
         <th class="px-4 py-2 border">Cliente</th>
         <th class="px-4 py-2 border">Monto</th>
         <th class="px-4 py-2 border">Estado</th>
@@ -13,7 +12,6 @@
     </thead>
     <tbody>
       <tr *ngFor="let pago of pagos">
-        <td class="px-4 py-2 border">{{ pago.id}}</td>
         <td class="px-4 py-2 border">{{ pago.usuario_id }}</td>
         <td class="px-4 py-2 border">{{ pago.monto }}</td>
         <td class="px-4 py-2 border">{{ pago.estado }}</td>

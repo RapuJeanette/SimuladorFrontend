@@ -134,4 +134,8 @@ export class Modelo3DComponent implements OnInit, OnDestroy{
     this.camera.position.z = 5 - zoomValue; // Ajusta el zoom según el valor
   }
 
+  goBack(): void {
+    this.router.navigate(['/historial']); // Redirige a la ruta deseada
+  }
+
 }

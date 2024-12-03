@@ -5,7 +5,6 @@
     <table class="min-w-full border border-collapse border-gray-200 rounded-lg shadow-lg table-auto">
       <thead class="bg-gray-100">
         <tr>
-          <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">ID</th>
           <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">Tipo Estado</th>
           <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">URL Modelo 3D</th>
           <th class="px-4 py-2 font-medium text-gray-700 border border-gray-300">Fecha</th>
@@ -18,9 +17,6 @@
           *ngFor="let procedimiento of procedimientos"
           class="even:bg-gray-50 hover:bg-gray-100"
         >
-          <td class="px-4 py-2 text-gray-600 border border-gray-300">
-            {{ procedimiento.id }}
-          </td>
           <td class="px-4 py-2 text-gray-600 border border-gray-300">
             {{ procedimiento.tipo_estado }}
           </td>

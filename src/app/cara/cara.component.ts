@@ -73,23 +73,75 @@ export class CaraComponent {
       formData.append('files', foto, foto.name);  // 'fotos' es el nombre del campo esperado por el backend
     });
 
-    this.http.post<{ model_url: string }>('https://simuladorbackend.onrender.com/upload-photos/', formData).subscribe(
-      (response: any) => {
-        console.log('Fotos enviadas correctamente:', response);
-        const modelo3dUrl = response.model_url
+    this.crearSimulacion().then((simulacionId) => {
+      this.http.post<{ model_url: string }>('https://simuladorbackend.onrender.com/upload-photos/', formData).subscribe(
+        (response: any) => {
+          console.log('Fotos enviadas correctamente:', response);
+          const modelo3dUrl = response.model_url;
 
-        this.crearEstadoSimulacion(response.model_url);
-        console.log("url"+ response.model_url);
-
-      },
-      (error) => {
-        console.error('Error al enviar fotos:', error);
-        // Aquí podrías mostrar un mensaje de error en la UI
-      }
-    );
+          // Crear estado de simulación
+          this.crearEstadoSimulacion(modelo3dUrl, simulacionId);
+        },
+        (error) => {
+          console.error('Error al enviar fotos:', error);
+        }
+      );
+    });
   }
 
-  crearEstadoSimulacion(urlModelo3d: string) {
+  crearSimulacion(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      // Obtener el paciente_id desde el correo en localStorage
+      const usuarioCorreo = localStorage.getItem('user_correo'); // Obtener el correo del usuario desde localStorage
+
+      if (!usuarioCorreo) {
+        console.error('Correo de usuario no encontrado');
+        return;
+      }
+
+      this.obtenerPacienteId(usuarioCorreo).then((pacienteId) => {
+        const simulacion = {
+          descripcion: '',  // Vacío inicialmente
+          fecha_creacion: new Date().toISOString(),
+          paciente_id: pacienteId
+        };
+
+        this.http.post<{ id: string }>('https://simuladorbackend.onrender.com/simulaciones/', simulacion).subscribe(
+          (response) => {
+            console.log('Simulación creada exitosamente:', response);
+            resolve(response.id);
+          },
+          (error) => {
+            console.error('Error al crear simulación:', error);
+            reject(error);
+          }
+        );
+      });
+    });
+  }
+
+  obtenerPacienteId(correo: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.http.get<any[]>('https://simuladorbackend.onrender.com/pacientes').subscribe(
+        (pacientes) => {
+          const paciente = pacientes.find(p => p.usuario_id === correo);
+          if (paciente) {
+            resolve(paciente.id);
+          } else {
+            console.error('Paciente no encontrado');
+            reject('Paciente no encontrado');
+          }
+        },
+        (error) => {
+          console.error('Error al obtener lista de pacientes:', error);
+          reject(error);
+        }
+      );
+    });
+  }
+
+
+  crearEstadoSimulacion(urlModelo3d: string, simulacionId: string) {
     const estadoSimulacion = {
       tipo_estado: 'Antes',  // Este valor puede ser dinámico
       url_modelo_3d: urlModelo3d,
@@ -102,7 +154,7 @@ export class CaraComponent {
         console.log('Estado de simulación creado con éxito:', response);
 
         // Navegar a otra vista o notificar al usuario del éxito
-        this.router.navigate(['/visualizador3d'], { queryParams: { url: urlModelo3d } });
+        this.router.navigate(['/visualizador3d'], { queryParams: { url: urlModelo3d, simulacionId } });
       },
       (error) => {
         console.error('Error al crear estado de simulación:', error);
@@ -114,10 +166,10 @@ export class CaraComponent {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let id = 'simulacion_';
     for (let i = 0; i < 10; i++) {
-        id += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+      id += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
     return id;
-}
+  }
 
 
 }

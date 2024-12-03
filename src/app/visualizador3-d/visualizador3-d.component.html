@@ -1,15 +1,22 @@
 <div class="flex min-h-screen text-white bg-gray-900">
   <!-- Panel del Visualizador 3D -->
   <div class="w-2/3 p-4 mx-auto bg-gray-800">
-    <div class="relative w-full h-full border border-gray-700 rounded-lg shadow-lg">
+    <div
+      class="relative w-full h-full border border-gray-700 rounded-lg shadow-lg"
+    >
       <!-- Letras arriba -->
       <div class="mt-4 text-center">
         <p class="text-lg font-semibold">Visualizador 3D</p>
-        <p class="text-sm text-gray-400">Arrastra para rotar, usa la rueda para acercar/alejar.</p>
+        <p class="text-sm text-gray-400">
+          Arrastra para rotar, usa la rueda para acercar/alejar.
+        </p>
       </div>
 
       <!-- Visualizador 3D centrado y responsivo -->
-      <div id="viewer3d" class="absolute w-full h-[60vh] top-20 left-0 right-0 mx-auto rounded-md"></div>
+      <div
+        id="viewer3d"
+        class="absolute w-full h-[60vh] top-20 left-0 right-0 mx-auto rounded-md"
+      ></div>
     </div>
   </div>
 
@@ -19,20 +26,30 @@
 
     <!-- Botones principales -->
     <div class="mt-6 space-y-4">
-      <button class="w-full px-4 py-2 text-lg font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
-        Cargar Modelo
+      <button
+        class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        (click)="actualizarSimulacion()"
+      >
+        Guardar Procedimiento
       </button>
 
-      <button class="w-full px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
-      (click)="goToPayment()">
+      <button
+        class="w-full px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
+        (click)="goToPayment()"
+      >
         Procesar Procedimiento
       </button>
     </div>
 
     <!-- Selección de Procedimiento -->
     <div class="mt-6">
-      <label for="procedimiento" class="block mb-2 text-sm font-medium">Elige el procedimiento:</label>
-      <select id="procedimiento" class="w-full px-4 py-2 text-gray-200 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <label for="procedimiento" class="block mb-2 text-sm font-medium"
+        >Elige el procedimiento:</label
+      >
+      <select
+        id="procedimiento"
+        class="w-full px-4 py-2 text-gray-200 bg-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
         <option value="rinosplastia">Rinoplastia</option>
         <option value="blefaroplastia">Blefaroplastia</option>
         <option value="lifting_facial">Lifting Facial</option>
@@ -46,23 +63,41 @@
     <div class="mt-6">
       <h3 class="text-lg font-semibold">Controles del Modelo</h3>
       <div class="flex items-center justify-between mt-4">
-        <button (click)="zoomIn()" class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400">
+        <button
+          (click)="zoomIn()"
+          class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400"
+        >
           Zoom In
         </button>
-        <button (click)="zoomOut()" class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400">
+        <button
+          (click)="zoomOut()"
+          class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400"
+        >
           Zoom Out
         </button>
       </div>
-      <label for="zoomRange" class="block mt-4 mb-2 text-sm font-medium">Ajustar Zoom:</label>
-      <input type="range" id="zoomRange" class="w-full h-2 bg-gray-400 rounded-lg" min="1" max="10" value="5" (input)="adjustZoom($event)">
+      <label for="zoomRange" class="block mt-4 mb-2 text-sm font-medium"
+        >Ajustar Zoom:</label
+      >
+      <input
+        type="range"
+        id="zoomRange"
+        class="w-full h-2 bg-gray-400 rounded-lg"
+        min="1"
+        max="10"
+        value="5"
+        (input)="adjustZoom($event)"
+      />
     </div>
 
     <!-- Navegación -->
     <div class="mt-6">
-      <button (click)="goBack()" class="w-full px-4 py-2 text-lg font-semibold text-gray-800 bg-gray-300 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-500">
+      <button
+        (click)="goBack()"
+        class="w-full px-4 py-2 text-lg font-semibold text-gray-800 bg-gray-300 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-500"
+      >
         Ir Atrás
       </button>
     </div>
   </div>
 </div>
-

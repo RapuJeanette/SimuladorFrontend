@@ -17,9 +17,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 export class Visualizador3DComponent implements OnInit, OnDestroy {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
-  renderer: THREE.WebGLRenderer =  new THREE.WebGLRenderer() ;
+  renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
   modelo3dUrl: string | null = null;
   controls: OrbitControls;
+  simulacionId: string | null = null;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient, private router: Router, private route: ActivatedRoute) {
     this.scene = new THREE.Scene();
@@ -30,32 +31,111 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
+      this.simulacionId = params['simulacionId'];
       this.modelo3dUrl = params['url'] || null;
 
       if (this.modelo3dUrl) {
-          console.log('URL del modelo 3D:', this.modelo3dUrl);
+        console.log('URL del modelo 3D:', this.modelo3dUrl);
       } else {
-          console.error('No se proporcionó la URL del modelo 3D');
+        console.error('No se proporcionó la URL del modelo 3D');
       }
-  });
+    });
     if (isPlatformBrowser(this.platformId)) {
       this.initThreeJS();
     }
   }
 
+  actualizarSimulacion() {
+    if (!this.simulacionId) {
+      console.error("No se encontró el ID de la simulación.");
+      alert("Error: No se puede actualizar la simulación porque falta el ID.");
+      return;
+    }
+
+    // Obtén el procedimiento seleccionado
+    const procedimientoSelect = (document.getElementById("procedimiento") as HTMLSelectElement);
+    const procedimientoSeleccionado = procedimientoSelect.value;
+
+    const userCorreo = localStorage.getItem('user_correo');
+    if (!userCorreo) {
+      console.error("No se encontró el correo del usuario en el almacenamiento local.");
+      alert("Error: No se puede obtener el paciente porque falta el correo del usuario.");
+      return;
+    }
+
+    // Consultar el paciente correspondiente al correo
+    this.http.get<any[]>('https://simuladorbackend.onrender.com/pacientes').subscribe(
+      (pacientes) => {
+        // Buscar el paciente con el correo que coincide
+        const paciente = pacientes.find((p) => p.usuario_id === userCorreo);
+
+        if (!paciente) {
+          console.error("No se encontró un paciente con el correo proporcionado.");
+          alert("Error: No se encontró un paciente asociado al correo del usuario.");
+          return;
+        }
+
+        const pacienteId = paciente.id;
+        // Crea los datos para actualizar
+        const datosActualizados = {
+          descripcion: procedimientoSeleccionado,
+          fecha_creacion: new Date().toISOString(),
+          paciente_id: pacienteId,
+        };
+
+        // Realiza la solicitud PUT al backend
+        this.http.put(`https://simuladorbackend.onrender.com/simulaciones/${this.simulacionId}`, datosActualizados).subscribe(
+          (response) => {
+            console.log('Simulación actualizada con éxito:', response);
+            alert('Simulación actualizada con éxito');
+          },
+          (error) => {
+            console.error('Error al actualizar simulación:', error);
+            alert('Error al actualizar la simulación. Por favor, inténtalo de nuevo.');
+          }
+        );
+      },(error) => {
+        console.error("Error al consultar la lista de pacientes:", error);
+        alert("Error al consultar la lista de pacientes. Por favor, inténtalo de nuevo.");
+      }
+    );
+  }
+
+  obtenerPacienteId(correo: string): Promise < string > {
+      return new Promise((resolve, reject) => {
+        this.http.get<any[]>('https://simuladorbackend.onrender.com/pacientes').subscribe(
+          (pacientes) => {
+            const paciente = pacientes.find(p => p.usuario_id === correo);
+            if (paciente) {
+              resolve(paciente.id);
+            } else {
+              console.error('Paciente no encontrado');
+              reject('Paciente no encontrado');
+            }
+          },
+          (error) => {
+            console.error('Error al obtener lista de pacientes:', error);
+            reject(error);
+          }
+        );
+      });
+    }
+
+
+
   initThreeJS(): void {
-    const viewerElement = document.getElementById('viewer3d');
-    const viewerRect = viewerElement?.getBoundingClientRect();
-    const width = viewerRect?.width || 800;  // Si no encuentra el contenedor, usa un tamaño predeterminado
-    const height = viewerRect?.height || 600;
+      const viewerElement = document.getElementById('viewer3d');
+      const viewerRect = viewerElement?.getBoundingClientRect();
+      const width = viewerRect?.width || 800;  // Si no encuentra el contenedor, usa un tamaño predeterminado
+      const height = viewerRect?.height || 600;
 
-    this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix();
-    this.camera.position.z = 1;
+      this.camera.aspect = width / height;
+      this.camera.updateProjectionMatrix();
+      this.camera.position.z = 1;
 
-    this.renderer.setSize(width, height);
-    this.renderer.setClearColor(0xffffff);
-    viewerElement?.appendChild(this.renderer.domElement);
+      this.renderer.setSize(width, height);
+      this.renderer.setClearColor(0xffffff);
+      viewerElement?.appendChild(this.renderer.domElement);
 
     // Agregar controles de la cámara para mover el objeto
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -92,8 +172,8 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
       this.modelo3dUrl,
       (gltf: { scene: any; }) => {
         const model = gltf.scene;
-        model.position.set(0,0,0);
-        model.scale.set(1,1,1);
+        model.position.set(0, 0, 0);
+        model.scale.set(1, 1, 1);
         this.scene?.add(model);
         this.animate();
       },
