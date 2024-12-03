@@ -52,7 +52,6 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Obtén el procedimiento seleccionado
     const procedimientoSelect = (document.getElementById("procedimiento") as HTMLSelectElement);
     const procedimientoSeleccionado = procedimientoSelect.value;
 
@@ -94,48 +93,48 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
             alert('Error al actualizar la simulación. Por favor, inténtalo de nuevo.');
           }
         );
-      },(error) => {
+      }, (error) => {
         console.error("Error al consultar la lista de pacientes:", error);
         alert("Error al consultar la lista de pacientes. Por favor, inténtalo de nuevo.");
       }
     );
   }
 
-  obtenerPacienteId(correo: string): Promise < string > {
-      return new Promise((resolve, reject) => {
-        this.http.get<any[]>('https://simuladorbackend.onrender.com/pacientes').subscribe(
-          (pacientes) => {
-            const paciente = pacientes.find(p => p.usuario_id === correo);
-            if (paciente) {
-              resolve(paciente.id);
-            } else {
-              console.error('Paciente no encontrado');
-              reject('Paciente no encontrado');
-            }
-          },
-          (error) => {
-            console.error('Error al obtener lista de pacientes:', error);
-            reject(error);
+  obtenerPacienteId(correo: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.http.get<any[]>('https://simuladorbackend.onrender.com/pacientes').subscribe(
+        (pacientes) => {
+          const paciente = pacientes.find(p => p.usuario_id === correo);
+          if (paciente) {
+            resolve(paciente.id);
+          } else {
+            console.error('Paciente no encontrado');
+            reject('Paciente no encontrado');
           }
-        );
-      });
-    }
+        },
+        (error) => {
+          console.error('Error al obtener lista de pacientes:', error);
+          reject(error);
+        }
+      );
+    });
+  }
 
 
 
   initThreeJS(): void {
-      const viewerElement = document.getElementById('viewer3d');
-      const viewerRect = viewerElement?.getBoundingClientRect();
-      const width = viewerRect?.width || 800;  // Si no encuentra el contenedor, usa un tamaño predeterminado
-      const height = viewerRect?.height || 600;
+    const viewerElement = document.getElementById('viewer3d');
+    const viewerRect = viewerElement?.getBoundingClientRect();
+    const width = viewerRect?.width || 800;  // Si no encuentra el contenedor, usa un tamaño predeterminado
+    const height = viewerRect?.height || 600;
 
-      this.camera.aspect = width / height;
-      this.camera.updateProjectionMatrix();
-      this.camera.position.z = 1;
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+    this.camera.position.z = 1;
 
-      this.renderer.setSize(width, height);
-      this.renderer.setClearColor(0xffffff);
-      viewerElement?.appendChild(this.renderer.domElement);
+    this.renderer.setSize(width, height);
+    this.renderer.setClearColor(0xffffff);
+    viewerElement?.appendChild(this.renderer.domElement);
 
     // Agregar controles de la cámara para mover el objeto
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -201,6 +200,34 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
     }
   }
 
+  procesarProcedimiento(): void {
+    const procedimientoSelect = (document.getElementById('procedimiento') as HTMLSelectElement);
+    const procedimientoSeleccionado = procedimientoSelect.value;
+
+    if (!procedimientoSeleccionado) {
+      alert('Por favor, selecciona un procedimiento.');
+      return;
+    }
+
+    localStorage.setItem('procedimientoSeleccionado', procedimientoSeleccionado);
+
+    const urlModelo3d = this.modelo3dUrl;
+    const simulacionId = this.simulacionId
+
+    if (!urlModelo3d) {
+      console.error('No se ha encontrado la URL del modelo 3D "Antes"');
+      return;
+    }
+    if (!simulacionId) {
+      console.error('No se ha encontrado el ID del modelo 3D "Antes"');
+      return;
+    }
+
+    console.log(procedimientoSeleccionado);
+    this.goToPayment(urlModelo3d, simulacionId);
+  }
+
+
   zoomIn(): void {
     this.camera.position.z -= 0.5; // Acerca la cámara
   }
@@ -216,8 +243,8 @@ export class Visualizador3DComponent implements OnInit, OnDestroy {
     this.camera.position.z = 5 - zoomValue; // Ajusta el zoom según el valor
   }
 
-  goToPayment(): void {
-    this.router.navigate(['/payment']); // Redirige a la ruta deseada
+  goToPayment(urlModelo3d: string, simulacion_id: string): void {
+    this.router.navigate(['/payment'], { queryParams: { url: urlModelo3d, simulacionId: simulacion_id } }); // Redirige a la ruta deseada
   }
 
   goBack(): void {
